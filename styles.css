@@ -57,12 +57,12 @@ h3 { font-size: 1.25rem; font-weight: 500; }
   background: transparent;
   border: 1.5px solid var(--gold);
 }
-body { cursor: none; }
-a, button { cursor: none; }
+/* cursor: none uniquement si le curseur custom est actif (classe ajoutée par JS) */
+body.has-cursor { cursor: none; }
+body.has-cursor a, body.has-cursor button { cursor: none; }
 
 @media (max-width: 768px) {
-  body { cursor: auto; }
-  a, button { cursor: auto; }
+  body.has-cursor, body.has-cursor a, body.has-cursor button { cursor: auto; }
   .cursor { display: none; }
 }
 
@@ -75,8 +75,6 @@ a, button { cursor: none; }
   text-transform: uppercase;
   padding: 0.55rem 0;
   text-align: center;
-  position: relative;
-  z-index: 900;
 }
 .reassurance-bar__inner {
   display: flex;
@@ -87,9 +85,14 @@ a, button { cursor: none; }
 }
 .rbar-sep { opacity: 0.5; }
 
+/* ── TOPBAR (réassurance + header empilés, fixés) ───────── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+}
+
 /* ── HEADER ─────────────────────────────────────────────── */
 .header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  position: relative; z-index: 1;
   background: var(--black);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -503,6 +506,7 @@ a, button { cursor: none; }
 }
 
 .product-card__image {
+  position: relative;
   background: #f7f7f7; aspect-ratio: 3/4;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden; padding: 2rem;
@@ -674,6 +678,16 @@ a, button { cursor: none; }
 /* ── FOCUS VISIBLE ───────────────────────────────────────── */
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
+/* ── REDUCED MOTION (accessibilité) ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ── RESPONSIVE ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .footer__grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
@@ -702,6 +716,9 @@ a, button { cursor: none; }
   .footer__legal { flex-wrap: wrap; justify-content: center; gap: 1rem; }
   /* Réduire les clusters sur tablette */
   .hero__cluster { width: clamp(110px, 12vw, 155px); }
+  /* Presse & témoignages */
+  .testimonials { grid-template-columns: 1fr; gap: 1.5rem; }
+  .press-logos { gap: 2rem; }
 }
 
 @media (max-width: 640px) {

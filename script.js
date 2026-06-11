@@ -160,8 +160,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     const target = document.querySelector(targetId);
     if (target) {
       e.preventDefault();
-      const headerHeight = header.offsetHeight;
-      const top = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+      const topbar = document.getElementById('topbar');
+      const offset = (topbar || header).offsetHeight;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
     }
   });
@@ -179,18 +180,32 @@ newsletterForm.addEventListener('submit', function(e) {
   newsletterSuccess.classList.add('visible');
 });
 
-// ── CUSTOM CURSOR ────────────────────────────────────────────
-(function() {
-  if (window.matchMedia('(max-width: 768px)').matches) return;
+// ── CURSEUR PERSONNALISÉ ──────────────────────────────────────
+// Désactivé sur écrans tactiles / petits écrans
+const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+if (supportsHover && window.innerWidth > 768) {
+  document.body.classList.add('has-cursor');
   const cursor = document.createElement('div');
   cursor.className = 'cursor';
+  cursor.style.opacity = '0';
   document.body.appendChild(cursor);
-  document.addEventListener('mousemove', e => {
+
+  let firstMove = true;
+  window.addEventListener('mousemove', (e) => {
+    if (firstMove) { cursor.style.opacity = '1'; firstMove = false; }
     cursor.style.left = e.clientX + 'px';
-    cursor.style.top  = e.clientY + 'px';
-  });
-  document.querySelectorAll('a, button').forEach(el => {
+    cursor.style.top = e.clientY + 'px';
+  }, { passive: true });
+
+  // Agrandit le curseur au survol des éléments interactifs
+  const hoverTargets = document.querySelectorAll('a, button, input, .product-card');
+  hoverTargets.forEach((el) => {
     el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
   });
-})();
+
+  // Masque le curseur quand la souris quitte la fenêtre
+  document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+}
