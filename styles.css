@@ -40,6 +40,53 @@ h3 { font-size: 1.25rem; font-weight: 500; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 .container--narrow { max-width: 800px; }
 
+/* ── CUSTOM CURSOR ───────────────────────────────────────── */
+.cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease, width 0.25s ease, height 0.25s ease, opacity 0.25s ease;
+  mix-blend-mode: difference;
+}
+.cursor--hover {
+  width: 36px; height: 36px;
+  background: transparent;
+  border: 1.5px solid var(--gold);
+}
+body { cursor: none; }
+a, button { cursor: none; }
+
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  a, button { cursor: auto; }
+  .cursor { display: none; }
+}
+
+/* ── REASSURANCE BAR ─────────────────────────────────────── */
+.reassurance-bar {
+  background: var(--gold);
+  color: var(--black);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.55rem 0;
+  text-align: center;
+  position: relative;
+  z-index: 900;
+}
+.reassurance-bar__inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.rbar-sep { opacity: 0.5; }
+
 /* ── HEADER ─────────────────────────────────────────────── */
 .header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -204,6 +251,18 @@ h3 { font-size: 1.25rem; font-weight: 500; }
   overflow: hidden;
   padding: 0 2rem;
 }
+
+/* 3D stage container */
+.hero__stage {
+  perspective: 1200px;
+  perspective-origin: 50% 45%;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
 .hero::before {
   content: '';
   position: absolute; inset: 0;
@@ -219,23 +278,40 @@ h3 { font-size: 1.25rem; font-weight: 500; }
 .hero__cluster {
   position: absolute;
   top: 50%;
-  width: clamp(150px, 15vw, 215px);
+  width: clamp(150px, 15vw, 210px);
   z-index: 1;
   pointer-events: none;
   opacity: 0;
-  animation: clusterIn 1.6s cubic-bezier(0.4,0,0.2,1) 0.7s forwards;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  animation:
+    clusterIn 1.6s ease 0.7s forwards,
+    bottleFloat3D 6s ease-in-out 2.3s infinite;
 }
-.hero__cluster--left  { left: clamp(0.5rem, 3.5%, 55px); transform: translateY(-50%); }
-.hero__cluster--right { right: clamp(0.5rem, 3.5%, 55px); transform: translateY(-50%) scaleX(-1); }
+.hero__cluster--left  { left: clamp(0.5rem, 3.5%, 55px); }
+.hero__cluster--right {
+  right: clamp(0.5rem, 3.5%, 55px);
+  animation-name: clusterInR, bottleFloat3DR;
+}
 
 @keyframes clusterIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from { opacity: 0; transform: translateY(-50%); }
+  to   { opacity: 1; transform: translateY(-50%) rotateY(-8deg) rotateX(3deg); }
 }
-.hero__cluster--right { animation-name: clusterInR; }
+
+@keyframes bottleFloat3D {
+  0%,100% { transform: translateY(-50%) rotateY(-8deg) rotateX(3deg); }
+  50%     { transform: translateY(-52%) rotateY(8deg) rotateX(-2deg); }
+}
+
 @keyframes clusterInR {
   from { opacity: 0; transform: translateY(-50%) scaleX(-1); }
-  to   { opacity: 1; transform: translateY(-50%) scaleX(-1); }
+  to   { opacity: 1; transform: translateY(-50%) scaleX(-1) rotateY(-8deg) rotateX(3deg); }
+}
+
+@keyframes bottleFloat3DR {
+  0%,100% { transform: translateY(-50%) scaleX(-1) rotateY(-8deg) rotateX(3deg); }
+  50%     { transform: translateY(-52%) scaleX(-1) rotateY(8deg) rotateX(-2deg); }
 }
 
 /* Scène — padding-top pour laisser la place au bouchon flottant */
@@ -521,13 +597,82 @@ h3 { font-size: 1.25rem; font-weight: 500; }
 
 /* ── SCROLL ANIMATIONS ───────────────────────────────────── */
 .animate-on-scroll {
-  opacity: 0; transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
 }
 .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 .animate-on-scroll:nth-child(2) { transition-delay: 0.1s; }
 .animate-on-scroll:nth-child(3) { transition-delay: 0.2s; }
 .animate-on-scroll:nth-child(4) { transition-delay: 0.05s; }
+
+/* Cartes produits en cascade */
+.products-grid .product-card:nth-child(1) { transition-delay: 0s; }
+.products-grid .product-card:nth-child(2) { transition-delay: 0.1s; }
+.products-grid .product-card:nth-child(3) { transition-delay: 0.2s; }
+
+/* ── PRESS LOGOS & TESTIMONIALS ──────────────────────────── */
+.section--black { background: var(--black); color: var(--white); }
+
+.press-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  margin: 2.5rem 0;
+}
+.press-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em;
+  transition: color var(--transition);
+}
+.press-logo:hover { color: var(--gold); }
+
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.testimonial {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1.5rem;
+}
+.testimonial__text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.testimonial__author {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ── PRODUCT CARD BADGE ──────────────────────────────────── */
+.product-card__badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--black);
+  color: var(--gold);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--gold);
+  z-index: 2;
+}
+
+/* ── FOCUS VISIBLE ───────────────────────────────────────── */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
 @media (max-width: 1024px) {

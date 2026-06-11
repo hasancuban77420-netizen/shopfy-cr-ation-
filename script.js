@@ -178,3 +178,19 @@ newsletterForm.addEventListener('submit', function(e) {
   newsletterForm.style.display = 'none';
   newsletterSuccess.classList.add('visible');
 });
+
+// ── CUSTOM CURSOR ────────────────────────────────────────────
+(function() {
+  if (window.matchMedia('(max-width: 768px)').matches) return;
+  const cursor = document.createElement('div');
+  cursor.className = 'cursor';
+  document.body.appendChild(cursor);
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+  });
+})();
