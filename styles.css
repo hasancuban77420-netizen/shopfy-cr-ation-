@@ -93,7 +93,7 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 /* ── HEADER ─────────────────────────────────────────────── */
 .header {
   position: relative; z-index: 1;
-  background: var(--black);
+  background: #0a0908;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: background var(--transition), border-bottom var(--transition);
@@ -222,15 +222,29 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 .btn--outlined:hover { background: var(--white); color: var(--black); border-color: var(--white); }
 
 .btn--gold { background: var(--gold); color: var(--black); border-color: var(--gold); font-weight: 600; }
-.btn--gold:hover { background: var(--gold-dark); border-color: var(--gold-dark); }
+.btn--gold:hover { background: var(--gold-dark); border-color: var(--gold-dark); box-shadow: 0 0 24px rgba(201,169,110,0.5); }
 
 .btn--sm { padding: 0.55rem 1.3rem; font-size: 0.65rem; letter-spacing: 0.15em; }
 .btn--full { width: 100%; }
 
+/* Boutons du hero — verre doré incandescent (thème noir & or) */
+.hero__ctas .btn {
+  color: var(--gold);
+  border-color: rgba(201,169,110,0.55);
+  background: rgba(10,8,6,0.30);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+}
+.hero__ctas .btn--filled { background: rgba(201,169,110,0.12); }
+.hero__ctas .btn:hover {
+  background: var(--gold); color: #0a0908; border-color: var(--gold);
+  box-shadow: 0 0 28px rgba(201,169,110,0.55);
+}
+
 /* ── SECTIONS ────────────────────────────────────────────── */
 .section { padding: 8rem 0; }
 .section--white { background: var(--white); color: var(--black); }
-.section--dark { background: var(--black); color: var(--white); }
+/* noir légèrement réchauffé pour l'ambiance or */
+.section--dark  { background: #0a0908; color: var(--white); }
 
 .section-header { text-align: center; margin-bottom: 5rem; }
 .section-eyebrow {
@@ -239,11 +253,21 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 }
 .section-eyebrow--light { color: var(--gold); }
 .section-title { margin-bottom: 1.5rem; }
-.section-title--light { color: var(--white); }
+/* titres dorés incandescents sur fond sombre */
+.section-title--light {
+  background: linear-gradient(105deg, #b8935a 0%, #e8cd96 45%, #ffe9b8 55%, #c9a96e 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  filter: drop-shadow(0 0 22px rgba(201,169,110,0.30));
+}
 .title-divider {
   width: 40px; height: 1px; background: var(--black); margin: 0 auto;
 }
-.title-divider--gold { background: var(--gold); }
+.title-divider--gold {
+  width: 60px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  box-shadow: 0 0 10px rgba(201,169,110,0.55);
+}
 
 /* ── HERO ─────────────────────────────────────────────────── */
 .hero {
@@ -266,15 +290,34 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
   justify-content: center;
   min-height: 100vh;
 }
+/* Ambiance cinématographique noir & or */
+.hero { background: #060606; }
 .hero::before {
   content: '';
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse at 50% 42%, rgba(201,169,110,0.06) 0%, transparent 42%),
-    radial-gradient(ellipse at 18% 50%, rgba(201,169,110,0.04) 0%, transparent 35%),
-    radial-gradient(ellipse at 82% 50%, rgba(201,169,110,0.04) 0%, transparent 35%),
-    radial-gradient(ellipse at 30% 70%, rgba(255,255,255,0.02) 0%, transparent 50%);
+    /* spot lumineux descendant du haut */
+    radial-gradient(ellipse 60% 45% at 50% -5%, rgba(201,169,110,0.14) 0%, transparent 60%),
+    /* halo doré chaud derrière le titre */
+    radial-gradient(ellipse 50% 42% at 50% 48%, rgba(201,169,110,0.13) 0%, transparent 60%),
+    /* lueurs latérales sur les flacons */
+    radial-gradient(ellipse 22% 50% at 9% 52%, rgba(201,169,110,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 22% 50% at 91% 52%, rgba(201,169,110,0.10) 0%, transparent 60%),
+    /* vignette sombre */
+    radial-gradient(ellipse 90% 90% at 50% 45%, transparent 55%, rgba(0,0,0,0.65) 100%);
   pointer-events: none;
+  z-index: 0;
+}
+/* Sol réfléchissant + brume basse */
+.hero::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 26%;
+  background:
+    linear-gradient(to top, rgba(201,169,110,0.07) 0%, rgba(201,169,110,0.02) 40%, transparent 100%),
+    linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ── HERO CLUSTERS (flacons réalistes) ───────────────────── */
@@ -320,11 +363,12 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
   width: 100%;
   height: auto;
   border-radius: 4px;
-  /* fond noir du cliché fondu dans le hero + halo doré */
-  filter: drop-shadow(0 18px 45px rgba(0,0,0,0.6))
-          drop-shadow(0 0 50px rgba(201,169,110,0.10));
-  -webkit-mask-image: radial-gradient(ellipse 78% 88% at 50% 50%, #000 60%, transparent 100%);
-  mask-image: radial-gradient(ellipse 78% 88% at 50% 50%, #000 60%, transparent 100%);
+  /* fond noir du cliché fondu dans le hero + halo doré chaud */
+  filter: drop-shadow(0 22px 50px rgba(0,0,0,0.7))
+          drop-shadow(0 0 55px rgba(201,169,110,0.22))
+          drop-shadow(0 0 18px rgba(201,169,110,0.15));
+  -webkit-mask-image: radial-gradient(ellipse 76% 86% at 50% 50%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(ellipse 76% 86% at 50% 50%, #000 58%, transparent 100%);
 }
 
 /* Point d'origine du spray — haut du flacon, côté intérieur */
@@ -373,12 +417,13 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
   border-radius: 50%;
   background: var(--c, rgba(201,169,110,0.8));
   opacity: 0;
+  filter: blur(1.5px);
   animation: mistP var(--d, 2.5s) var(--t, 0s) ease-out infinite;
 }
 @keyframes mistP {
-  0%   { transform: translate(0,0) scale(1);                          opacity: 0.9; }
-  14%  { opacity: 0.82; }
-  100% { transform: translate(var(--dx,90px),var(--dy,0px)) scale(0.06); opacity: 0; }
+  0%   { transform: translate(0,0) scale(0.8);                         opacity: 0.85; }
+  14%  { opacity: 0.7; }
+  100% { transform: translate(var(--dx,90px),var(--dy,0px)) scale(2.6); opacity: 0; }
 }
 
 /* Fragments dorés */
@@ -407,15 +452,44 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
   color: var(--gold); margin-bottom: 2rem; display: block;
 }
 
-/* Titre avec shimmer + effet brume */
-.hero__title { color: var(--white); margin-bottom: 1.5rem; line-height: 1.05; }
+/* Titre OR INCANDESCENT avec halo lumineux */
+.hero__title {
+  position: relative;
+  margin-bottom: 1.5rem;
+  line-height: 1.05;
+}
+/* halo doux derrière le titre */
+.hero__title::before {
+  content: '';
+  position: absolute;
+  left: -18%; right: -18%; top: 50%;
+  height: 130%;
+  transform: translateY(-50%);
+  background: radial-gradient(ellipse at center, rgba(201,169,110,0.30) 0%, rgba(201,169,110,0.10) 35%, transparent 68%);
+  filter: blur(22px);
+  z-index: -1;
+  pointer-events: none;
+}
+/* fine traînée de lumière horizontale */
+.hero__title::after {
+  content: '';
+  position: absolute;
+  left: -10%; right: -10%; top: 52%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: linear-gradient(to right, transparent, rgba(255,224,160,0.55) 30%, rgba(255,240,210,0.8) 50%, rgba(255,224,160,0.55) 70%, transparent);
+  filter: blur(1.2px);
+  z-index: -1;
+  opacity: 0.7;
+  pointer-events: none;
+}
 
 .hero__title--shine {
   background: linear-gradient(
-    112deg,
-    #ffffff 0%, #ffffff 30%,
-    #c9a96e 50%,
-    #ffffff 70%, #ffffff 100%
+    105deg,
+    #9a7434 0%, #c9a96e 26%,
+    #ffe9b8 50%,
+    #c9a96e 74%, #9a7434 100%
   );
   background-size: 280% 100%;
   background-position: 150% 0;
@@ -432,9 +506,10 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
   0%, 100% { background-position: 150% 0; }
   46%, 54%  { background-position: -50% 0; }
 }
+/* Lueur dorée permanente qui s'intensifie au passage de la brume */
 @keyframes mistTouch {
-  0%, 100%  { filter: blur(0px)   drop-shadow(0 0 0px   rgba(201,169,110,0.0)); }
-  40%, 60%  { filter: blur(0.9px) drop-shadow(0 0 18px  rgba(201,169,110,0.3)); }
+  0%, 100%  { filter: drop-shadow(0 0 20px rgba(201,169,110,0.45)) drop-shadow(0 0 46px rgba(201,169,110,0.20)); }
+  45%, 55%  { filter: blur(0.5px) drop-shadow(0 0 34px rgba(255,214,140,0.62)) drop-shadow(0 0 70px rgba(201,169,110,0.32)); }
 }
 
 .hero__subtitle {
@@ -522,6 +597,7 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 .signature-text {
   display: block; font-family: 'Playfair Display', serif; font-size: 3rem; font-style: italic;
   color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  text-shadow: 0 0 28px rgba(201,169,110,0.4);
 }
 .signature-sub { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
 
@@ -534,9 +610,14 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 .feature-text { font-size: 0.85rem; color: var(--gray-mid); line-height: 1.8; }
 
 /* ── NEWSLETTER ──────────────────────────────────────────── */
-.newsletter { background: var(--black); padding: 7rem 0; }
+.newsletter {
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 0%, rgba(201,169,110,0.10) 0%, transparent 60%),
+    #0a0908;
+  padding: 7rem 0;
+}
 .newsletter__inner { text-align: center; }
-.newsletter__title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); color: var(--white); margin-bottom: 1rem; font-style: italic; }
+.newsletter__title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); color: var(--white); margin-bottom: 1rem; font-style: italic; text-shadow: 0 0 30px rgba(201,169,110,0.25); }
 .newsletter__subtitle { color: rgba(255,255,255,0.5); font-size: 0.85rem; letter-spacing: 0.08em; margin-bottom: 2.5rem; max-width: 480px; margin-left: auto; margin-right: auto; }
 .newsletter__form { display: flex; gap: 0; max-width: 480px; margin: 0 auto 1rem; }
 .newsletter__input {
@@ -551,7 +632,7 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 .newsletter__success.visible { display: block; }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
-.footer { background: var(--black); border-top: 1px solid rgba(255,255,255,0.07); padding: 6rem 0 3rem; }
+.footer { background: #0a0908; border-top: 1px solid rgba(201,169,110,0.12); padding: 6rem 0 3rem; }
 .footer__grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 5rem; }
 .footer__logo { font-family: 'Playfair Display', serif; font-size: 2rem; letter-spacing: 0.25em; color: var(--white); display: block; margin-bottom: 1rem; }
 .footer__tagline { font-size: 0.8rem; color: rgba(255,255,255,0.4); letter-spacing: 0.05em; margin-bottom: 1rem; }
@@ -598,7 +679,7 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 .products-grid .product-card:nth-child(3) { transition-delay: 0.2s; }
 
 /* ── PRESS LOGOS & TESTIMONIALS ──────────────────────────── */
-.section--black { background: var(--black); color: var(--white); }
+.section--black { background: #0a0908; color: var(--white); }
 
 .press-logos {
   display: flex;
