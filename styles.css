@@ -830,13 +830,13 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 
   /* Hero */
   .hero { min-height: 100svh; }
-  .hero--image .hero__photo { object-position: 35% top; }
+  .hero--image .hero__photo { object-position: center top; }
   .hero__ctas-overlay {
     bottom: 10%;
     gap: 0.75rem;
     flex-direction: column;
     align-items: center;
-    width: 80%;
+    width: 78%;
   }
   .btn--hero { width: 100%; padding: 0.85rem 1rem; font-size: 0.68rem; }
 
