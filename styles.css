@@ -340,7 +340,10 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
 /* Portrait (téléphone / tablette) : l'image entière est visible, pleine
    largeur, fondue dans le noir ambiant ; les vrais boutons sont dessous. */
 @media (orientation: portrait) {
-  .hero--image { min-height: 100svh; padding: 0; gap: clamp(1.4rem, 4vh, 2.2rem); }
+  /* Hero compact : pas de bandes vides au-dessus / en-dessous de l'image.
+     Le padding-top dégage la topbar fixe (bandeau + header ≈ 92-110px).
+     Sélecteur doublé : doit l'emporter sur le bloc .hero défini plus bas. */
+  .hero.hero--image { min-height: 0; padding: 7.5rem 0 2.5rem; gap: 1.4rem; }
   .hero--image .hero__photo {
     position: relative; inset: auto;
     width: 108%; max-width: none; height: auto;
@@ -361,7 +364,6 @@ body.has-cursor a, body.has-cursor button { cursor: none; }
     padding: 0.9rem 0.5rem;
     font-size: 0.7rem;
   }
-  .hero--image .hero__scroll-indicator { display: flex; }
 }
 
 /* ── HERO ─────────────────────────────────────────────────── */
