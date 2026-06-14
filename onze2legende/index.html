@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Onze2Légende — Maillots officiels Coupe du Monde 2026. France, Brésil, Argentine et toutes les grandes nations. Livraison express, taille garantie." />
+  <title>Onze2Légende – Maillots Coupe du Monde 2026</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- TOPBAR FIXÉ -->
+  <div class="topbar" id="topbar">
+    <div class="rbar">
+      <div class="rbar__inner">
+        <span>Livraison offerte dès 60€</span>
+        <span class="rbar-sep">✦</span>
+        <span>Retours gratuits 30 jours</span>
+        <span class="rbar-sep">✦</span>
+        <span>Paiement sécurisé</span>
+        <span class="rbar-sep">✦</span>
+        <span>Taille garantie ou remboursé</span>
+      </div>
+    </div>
+    <header class="header" id="header">
+      <div class="header__inner">
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <a href="#hero" class="logo">
+          <span class="logo__o2">ONZE2</span><span class="logo__leg">LÉGENDE</span>
+        </a>
+        <nav class="nav" id="nav">
+          <ul class="nav__list">
+            <li><a href="#hero" class="nav__link">Accueil</a></li>
+            <li><a href="#collection" class="nav__link">Collection</a></li>
+            <li><a href="#france" class="nav__link">France</a></li>
+            <li><a href="#univers" class="nav__link">Univers</a></li>
+            <li><a href="#contact" class="nav__link">Contact</a></li>
+          </ul>
+        </nav>
+        <button class="cart-btn" id="cartBtn" aria-label="Panier">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </header>
+  </div>
+
+  <!-- CART OVERLAY + SIDEBAR -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-sidebar__header">
+      <h2 class="cart-sidebar__title">Mon Panier</h2>
+      <button class="cart-close" id="cartClose" aria-label="Fermer">✕</button>
+    </div>
+    <div class="cart-sidebar__items" id="cartItems">
+      <p class="cart-empty">Ton panier est vide.</p>
+    </div>
+    <div class="cart-sidebar__footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">0€</span>
+      </div>
+      <a href="checkout.html" class="btn btn--green btn--full" id="checkoutBtn">Commander →</a>
+    </div>
+  </aside>
+
+  <!-- MODAL TAILLE -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="size-modal" id="sizeModal">
+      <div class="modal-header">
+        <div>
+          <p class="modal-nation" id="modalNation"></p>
+          <h3 class="modal-name" id="modalName"></h3>
+        </div>
+        <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
+      </div>
+      <div class="modal-jersey-wrap" id="modalJerseyWrap"></div>
+      <p class="modal-price" id="modalPrice"></p>
+      <h4 class="modal-size-label">Choisis ta taille</h4>
+      <div class="size-options" id="sizeOptions">
+        <button class="size-btn" data-size="XS">XS</button>
+        <button class="size-btn" data-size="S">S</button>
+        <button class="size-btn" data-size="M">M</button>
+        <button class="size-btn" data-size="L">L</button>
+        <button class="size-btn" data-size="XL">XL</button>
+        <button class="size-btn" data-size="XXL">XXL</button>
+      </div>
+      <a href="#" class="size-guide-link">Guide des tailles →</a>
+      <button class="btn btn--green btn--full" id="confirmAdd" disabled>Ajouter au panier</button>
+    </div>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <div class="hero__glow"></div>
+      <div class="hero__grid"></div>
+    </div>
+
+    <div class="hero__content">
+      <p class="hero__tag">COUPE DU MONDE · 2026</p>
+      <h1 class="hero__title">ONZE2<br><em>LÉGENDE</em></h1>
+      <p class="hero__sub">Les maillots officiels des plus grandes nations du monde.</p>
+      <div class="hero__ctas">
+        <a href="#collection" class="btn btn--green">Explorer la collection</a>
+        <a href="#france" class="btn btn--outline-white">Équipe de France</a>
+      </div>
+      <div class="hero__stats">
+        <div class="hero-stat"><span class="hero-stat__num">48</span><span class="hero-stat__label">Nations</span></div>
+        <div class="hero-stat__sep"></div>
+        <div class="hero-stat"><span class="hero-stat__num">10+</span><span class="hero-stat__label">Maillots</span></div>
+        <div class="hero-stat__sep"></div>
+        <div class="hero-stat"><span class="hero-stat__num">2026</span><span class="hero-stat__label">Édition</span></div>
+      </div>
+    </div>
+
+    <div class="hero__showcase" aria-hidden="true">
+      <div class="hero__jersey-wrap" id="heroJersey">
+        <!-- France jersey injecté par JS -->
+      </div>
+      <span class="hero__jersey-label">MBAPPÉ · 10</span>
+    </div>
+
+    <div class="hero__scroll">
+      <span>Défiler</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ══ COLLECTION ══ -->
+  <section class="section" id="collection">
+    <div class="container">
+      <div class="section-head animate-scroll">
+        <p class="eyebrow">Nos Maillots</p>
+        <h2 class="section-title">LA COLLECTION 2026</h2>
+        <div class="divider"></div>
+      </div>
+
+      <!-- Filtres par nation -->
+      <div class="filter-bar animate-scroll" id="filterBar">
+        <button class="filter-btn active" data-filter="all">Toutes les nations</button>
+        <button class="filter-btn" data-filter="france">🇫🇷 France</button>
+        <button class="filter-btn" data-filter="bresil">🇧🇷 Brésil</button>
+        <button class="filter-btn" data-filter="argentine">🇦🇷 Argentine</button>
+        <button class="filter-btn" data-filter="espagne">🇪🇸 Espagne</button>
+        <button class="filter-btn" data-filter="portugal">🇵🇹 Portugal</button>
+        <button class="filter-btn" data-filter="maroc">🇲🇦 Maroc</button>
+        <button class="filter-btn" data-filter="allemagne">🇩🇪 Allemagne</button>
+        <button class="filter-btn" data-filter="angleterre">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre</button>
+        <button class="filter-btn" data-filter="italie">🇮🇹 Italie</button>
+      </div>
+
+      <!-- Grille produits -->
+      <div class="products-grid" id="productsGrid">
+
+        <!-- France Domicile -->
+        <article class="product-card animate-scroll" data-nation="france" data-id="1" data-name="Maillot France Domicile 2026" data-price="75" data-badge="France ★★" data-nation-label="France">
+          <div class="product-card__img" id="img-1"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">France</p>
+            <h3 class="product-card__name">Maillot Domicile 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">75€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="1">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- France Extérieur -->
+        <article class="product-card animate-scroll" data-nation="france" data-id="2" data-name="Maillot France Extérieur 2026" data-price="75" data-badge="Édition Limitée" data-nation-label="France">
+          <div class="product-card__img" id="img-2"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">France</p>
+            <h3 class="product-card__name">Maillot Extérieur 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">75€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="2">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Brésil -->
+        <article class="product-card animate-scroll" data-nation="bresil" data-id="3" data-name="Maillot Brésil Domicile 2026" data-price="70" data-badge="5 ★ Mondial" data-nation-label="Brésil">
+          <div class="product-card__img" id="img-3"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">Brésil</p>
+            <h3 class="product-card__name">Maillot Domicile 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">70€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="3">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Argentine -->
+        <article class="product-card animate-scroll" data-nation="argentine" data-id="4" data-name="Maillot Argentine Domicile 2026" data-price="70" data-badge="3 ★ Mondial" data-nation-label="Argentine">
+          <div class="product-card__img" id="img-4"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">Argentine</p>
+            <h3 class="product-card__name">Maillot Domicile 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">70€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="4">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Espagne -->
+        <article class="product-card animate-scroll" data-nation="espagne" data-id="5" data-name="Maillot Espagne Domicile 2026" data-price="70" data-badge="1 ★ Mondial" data-nation-label="Espagne">
+          <div class="product-card__img" id="img-5"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">Espagne</p>
+            <h3 class="product-card__name">Maillot Domicile 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">70€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="5">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Portugal -->
+        <article class="product-card animate-scroll" data-nation="portugal" data-id="6" data-name="Maillot Portugal Domicile 2026" data-price="70" data-nation-label="Portugal">
+          <div class="product-card__img" id="img-6"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">Portugal</p>
+            <h3 class="product-card__name">Maillot Domicile 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">70€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="6">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Maroc -->
+        <article class="product-card animate-scroll" data-nation="maroc" data-id="7" data-name="Maillot Maroc Domicile 2026" data-price="68" data-nation-label="Maroc">
+          <div class="product-card__img" id="img-7"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">Maroc</p>
+            <h3 class="product-card__name">Maillot Domicile 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">68€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="7">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Allemagne -->
+        <article class="product-card animate-scroll" data-nation="allemagne" data-id="8" data-name="Maillot Allemagne Domicile 2026" data-price="70" data-badge="4 ★ Mondial" data-nation-label="Allemagne">
+          <div class="product-card__img" id="img-8"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">Allemagne</p>
+            <h3 class="product-card__name">Maillot Domicile 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">70€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="8">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Angleterre -->
+        <article class="product-card animate-scroll" data-nation="angleterre" data-id="9" data-name="Maillot Angleterre Domicile 2026" data-price="70" data-badge="1 ★ Mondial" data-nation-label="Angleterre">
+          <div class="product-card__img" id="img-9"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">Angleterre</p>
+            <h3 class="product-card__name">Maillot Domicile 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">70€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="9">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Italie -->
+        <article class="product-card animate-scroll" data-nation="italie" data-id="10" data-name="Maillot Italie Domicile 2026" data-price="68" data-badge="4 ★ Mondial" data-nation-label="Italie">
+          <div class="product-card__img" id="img-10"></div>
+          <div class="product-card__body">
+            <p class="product-card__nation">Italie</p>
+            <h3 class="product-card__name">Maillot Domicile 2026</h3>
+            <p class="product-card__desc">Polyester technique · Coupe athlétique</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">68€</span>
+              <button class="btn btn--green btn--sm size-trigger" data-id="10">Choisir ma taille</button>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /.products-grid -->
+    </div>
+  </section>
+
+  <!-- ══ FRANCE SPOTLIGHT ══ -->
+  <section class="section section--france" id="france">
+    <div class="container">
+      <div class="france-grid">
+        <div class="france-text animate-scroll">
+          <p class="eyebrow eyebrow--light">Les Bleus</p>
+          <h2 class="france-title">ALLEZ LA<br>FRANCE.</h2>
+          <p class="france-lead">2 étoiles. 1 peuple. 1 maillot.</p>
+          <p class="france-body">De Zidane à Mbappé, la France porte l'histoire du football mondial sur chaque couture. En bleu domicile ou en blanc à l'extérieur — rejoins la légende.</p>
+          <button class="btn btn--green filter-cta" data-filter="france">Voir tous les maillots France</button>
+        </div>
+        <div class="france-jerseys animate-scroll" id="franceShowcase"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ UNIVERS ══ -->
+  <section class="section section--white" id="univers">
+    <div class="container">
+      <div class="univers-grid">
+        <div class="univers-visual animate-scroll" id="universVisual"></div>
+        <div class="univers-text animate-scroll">
+          <p class="eyebrow">Notre mission</p>
+          <h2 class="section-title">VIS LE MATCH.</h2>
+          <p class="univers-body">La Coupe du Monde 2026 s'étale sur 3 pays — États-Unis, Canada, Mexique. 48 nations. 104 matchs. La plus grande compétition de l'histoire du football.</p>
+          <p class="univers-body">Onze2Légende sélectionne les maillots officiels des plus grandes nations. Authentiques, taille garantie, livraison express.</p>
+          <div class="univers-stats">
+            <div class="u-stat"><span class="u-stat__num">48</span><span class="u-stat__label">Nations qualifiées</span></div>
+            <div class="u-stat"><span class="u-stat__num">104</span><span class="u-stat__label">Matchs joués</span></div>
+            <div class="u-stat"><span class="u-stat__num">3</span><span class="u-stat__label">Pays hôtes</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SOCIAL PROOF ══ -->
+  <section class="section section--dark" id="proof">
+    <div class="container container--narrow">
+      <div class="proof-top animate-scroll">
+        <p class="proof-big">12 000+</p>
+        <p class="proof-sub">supporters habillés en légende</p>
+      </div>
+      <div class="testimonials animate-scroll">
+        <blockquote class="testimonial">
+          <p>"Qualité top, maillot reçu en 48h. Le bleu France est parfait, exactement comme l'original."</p>
+          <footer>— Yanis B., Paris</footer>
+        </blockquote>
+        <blockquote class="testimonial">
+          <p>"Le maillot Argentine avec les 3 étoiles — trop classe. Tout le monde me demande où je l'ai eu."</p>
+          <footer>— Lucas M., Lyon</footer>
+        </blockquote>
+        <blockquote class="testimonial">
+          <p>"Taille impeccable, livraison rapide. Je recommande à tous les fans de foot."</p>
+          <footer>— Imrane K., Marseille</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ NEWSLETTER ══ -->
+  <section class="newsletter" id="newsletter">
+    <div class="container container--narrow">
+      <div class="newsletter__inner animate-scroll">
+        <p class="eyebrow eyebrow--light">Rejoins la légende</p>
+        <h2 class="newsletter__title">EARLY ACCESS</h2>
+        <p class="newsletter__sub">Sois le premier informé des nouvelles arrivées, éditions limitées et offres exclusives.</p>
+        <form class="newsletter__form" id="newsletterForm">
+          <input type="email" class="newsletter__input" placeholder="ton@email.com" required aria-label="Email" />
+          <button type="submit" class="btn btn--green">S'inscrire</button>
+        </form>
+        <p class="newsletter__bonus">🎁 −10% sur ta première commande dès inscription</p>
+        <p class="newsletter__success" id="newsletterSuccess">C'est bon ! Vérifie ta boîte mail.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <span class="footer__logo">ONZE2<span class="logo__leg">LÉGENDE</span></span>
+          <p class="footer__tagline">Le maillot qui fait la légende.</p>
+          <p class="footer__address">Paris, France · contact@onze2legende.fr</p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Collection</h4>
+          <ul class="footer__list">
+            <li><a href="#france">France</a></li>
+            <li><a href="#collection">Toutes les nations</a></li>
+            <li><a href="#collection">Nouveautés</a></li>
+            <li><a href="#collection">Éditions Limitées</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Infos</h4>
+          <ul class="footer__list">
+            <li><a href="#univers">Notre mission</a></li>
+            <li><a href="#">Guide des tailles</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Blog foot</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Service</h4>
+          <ul class="footer__list">
+            <li><a href="#">Livraison &amp; retours</a></li>
+            <li><a href="#">Suivi de commande</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Avis clients</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 Onze2Légende. Tous droits réservés.</p>
+        <div class="footer__legal">
+          <a href="#">Mentions légales</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">CGV</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

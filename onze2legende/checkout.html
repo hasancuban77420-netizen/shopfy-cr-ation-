@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commander – Onze2Légende</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- TOPBAR (simplified) -->
+  <div class="topbar" id="topbar">
+    <div class="rbar">
+      <div class="rbar__inner">
+        <span>Paiement 100% sécurisé</span>
+        <span class="rbar-sep">✦</span>
+        <span>Livraison express 24-48h</span>
+      </div>
+    </div>
+    <header class="header">
+      <div class="header__inner">
+        <a href="index.html" class="logo">
+          <span class="logo__o2">ONZE2</span><span class="logo__leg">LÉGENDE</span>
+        </a>
+        <a href="index.html" class="btn btn--outline-white btn--sm">← Retour à la boutique</a>
+      </div>
+    </header>
+  </div>
+
+  <main class="checkout-page">
+    <div class="checkout-container">
+
+      <!-- ÉTAPES -->
+      <div class="checkout-steps" id="checkoutSteps">
+        <div class="checkout-step-indicator active" id="ind-1">
+          <span class="step-num">1</span>
+          <span>Panier</span>
+        </div>
+        <div class="step-sep"></div>
+        <div class="checkout-step-indicator" id="ind-2">
+          <span class="step-num">2</span>
+          <span>Informations</span>
+        </div>
+        <div class="step-sep"></div>
+        <div class="checkout-step-indicator" id="ind-3">
+          <span class="step-num">3</span>
+          <span>Confirmation</span>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 1 : PANIER -->
+      <div class="step active" id="step1">
+        <h2 class="checkout-title">TON PANIER</h2>
+        <div id="co-items">
+          <p class="cart-empty">Ton panier est vide. <a href="index.html" style="color:var(--vert-vif)">Retour à la boutique →</a></p>
+        </div>
+        <div id="co-summary" style="display:none">
+          <div class="checkout-subtotal">
+            <span>Livraison</span>
+            <span id="co-shipping">Gratuite</span>
+          </div>
+          <div class="checkout-total">
+            <span>Total</span>
+            <span id="co-total">0€</span>
+          </div>
+          <button class="btn btn--green btn--full" id="toStep2" style="font-size:0.8rem;padding:1rem;">
+            Continuer vers les informations →
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 2 : INFOS + PAIEMENT -->
+      <div class="step" id="step2">
+        <h2 class="checkout-title">TES INFORMATIONS</h2>
+        <form id="infoForm">
+          <div class="form-section">
+            <h4>Coordonnées</h4>
+            <div class="form-row">
+              <div class="form-field"><input type="text" name="prenom" placeholder="Prénom" required /></div>
+              <div class="form-field"><input type="text" name="nom" placeholder="Nom" required /></div>
+            </div>
+            <div class="form-field"><input type="email" name="email" placeholder="Email" required /></div>
+            <div class="form-field"><input type="tel" name="tel" placeholder="Téléphone (optionnel)" /></div>
+          </div>
+          <div class="form-section">
+            <h4>Adresse de livraison</h4>
+            <div class="form-field"><input type="text" name="adresse" placeholder="Adresse" required /></div>
+            <div class="form-row">
+              <div class="form-field"><input type="text" name="cp" placeholder="Code postal" required /></div>
+              <div class="form-field"><input type="text" name="ville" placeholder="Ville" required /></div>
+            </div>
+            <div class="form-field">
+              <select name="pays">
+                <option value="france">France</option>
+                <option value="belgique">Belgique</option>
+                <option value="suisse">Suisse</option>
+                <option value="luxembourg">Luxembourg</option>
+                <option value="canada">Canada</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-section">
+            <h4>Paiement sécurisé</h4>
+            <p class="payment-badge">Toutes les transactions sont chiffrées (SSL)</p>
+            <div class="form-field"><input type="text" placeholder="Numéro de carte" value="4242 4242 4242 4242" readonly /></div>
+            <div class="form-row">
+              <div class="form-field"><input type="text" placeholder="MM / AA" value="12 / 28" readonly /></div>
+              <div class="form-field"><input type="text" placeholder="CVV" value="123" readonly /></div>
+            </div>
+            <p style="font-size:0.65rem;color:var(--gris);letter-spacing:0.08em;margin-top:0.5rem;">
+              Ceci est une démonstration — aucun paiement réel n'est effectué.
+            </p>
+          </div>
+          <button type="submit" class="btn btn--green btn--full" style="font-size:0.8rem;padding:1rem;">
+            Confirmer la commande →
+          </button>
+        </form>
+      </div>
+
+      <!-- ÉTAPE 3 : CONFIRMATION -->
+      <div class="step" id="step3">
+        <div class="confirm-screen">
+          <div class="confirm-icon">✓</div>
+          <h2>COMMANDE CONFIRMÉE !</h2>
+          <p class="order-num" id="orderNum"></p>
+          <p>Un email de confirmation a été envoyé à <strong id="confirmEmail"></strong></p>
+          <p style="margin-top:1.5rem;">Livraison estimée : <strong>dans 2 à 4 jours ouvrés</strong></p>
+          <a href="index.html" class="btn btn--green" style="margin-top:2.5rem;display:inline-flex;">
+            Retour à la boutique
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+<script>
+'use strict';
+/* Minimal JERSEYS data and SVG builder (copy from script.js) */
+const JERSEYS = {
+  1:  { body:'#00209F', sleeve:'#00209F', cuff:'#EF3340', collar:'#FFFFFF', text:'#FFFFFF', num:'10', code:'FRA', stars:2, starCol:'#FFD700' },
+  2:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#EF3340', collar:'#00209F', text:'#00209F', num:'9',  code:'FRA', stars:2, starCol:'#00209F' },
+  3:  { body:'#FFD700', sleeve:'#FFD700', cuff:'#009C3B', collar:'#009C3B', text:'#002776', num:'10', code:'BRA', stars:5, starCol:'#002776' },
+  4:  { body:null, sleeve:null, cuff:'#74ACDF', collar:'#74ACDF', text:'#002868', num:'10', code:'ARG', stars:3, starCol:'#FFD700', pattern:'stripes-ar' },
+  5:  { body:'#C60B1E', sleeve:'#C60B1E', cuff:'#F1BF00', collar:'#F1BF00', text:'#FFFFFF', num:'10', code:'ESP', stars:1, starCol:'#FFD700' },
+  6:  { body:'#C4161C', sleeve:'#C4161C', cuff:'#006600', collar:'#006600', text:'#FFFFFF', num:'7',  code:'POR', stars:0, starCol:'#FFD700' },
+  7:  { body:'#C1272D', sleeve:'#C1272D', cuff:'#006233', collar:'#006233', text:'#FFFFFF', num:'22', code:'MAR', stars:0, starCol:'#FFD700' },
+  8:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#1a1a1a', collar:'#1a1a1a', text:'#1a1a1a', num:'8',  code:'GER', stars:4, starCol:'#1a1a1a' },
+  9:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#CF081F', collar:'#CF081F', text:'#CF081F', num:'9',  code:'ENG', stars:1, starCol:'#CF081F' },
+  10: { body:'#003DA5', sleeve:'#003DA5', cuff:'#FFFFFF', collar:'#FFFFFF', text:'#FFFFFF', num:'10', code:'ITA', stars:4, starCol:'#FFD700' },
+};
+
+function buildJerseySVG(id) {
+  const j = JERSEYS[id];
+  if (!j) return '';
+  const uid = `co${id}`;
+  const stars = '★'.repeat(j.stars);
+  let bodyParts = '';
+  if (j.pattern === 'stripes-ar') {
+    bodyParts = `<defs><pattern id="sp_${uid}" x="0" y="0" width="22" height="200" patternUnits="userSpaceOnUse"><rect x="0" width="11" height="200" fill="#74ACDF"/><rect x="11" width="11" height="200" fill="#ffffff"/></pattern><mask id="sm_${uid}"><path d="M58,28 L30,58 L30,186 L150,186 L150,58 L122,28 L90,52 Z" fill="white"/><path d="M28,14 L5,50 L30,58 L58,28 Z" fill="white"/><path d="M152,14 L175,50 L150,58 L122,28 Z" fill="white"/></mask></defs><rect x="0" y="0" width="180" height="200" fill="url(#sp_${uid})" mask="url(#sm_${uid})"/>`;
+  } else {
+    bodyParts = `<path d="M58,28 L30,58 L30,186 L150,186 L150,58 L122,28 L90,52 Z" fill="${j.body}"/><path d="M28,14 L5,50 L30,58 L58,28 Z" fill="${j.sleeve}"/><path d="M152,14 L175,50 L150,58 L122,28 Z" fill="${j.sleeve}"/>`;
+  }
+  return `<svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg" class="jersey-svg" style="width:100%;max-width:64px">${bodyParts}<path d="M5,50 L28,14 L34,17 L11,53 Z" fill="${j.cuff}"/><path d="M175,50 L152,14 L146,17 L169,53 Z" fill="${j.cuff}"/><path d="M58,28 Q74,18 90,16 Q106,18 122,28 L90,52 Z" fill="${j.collar}"/>${stars?`<text x="69" y="68" fill="${j.starCol}" font-size="9" letter-spacing="3" font-family="serif">${stars}</text>`:''}<text x="90" y="148" text-anchor="middle" fill="${j.text}" font-family="Inter,sans-serif" font-weight="800" font-size="11" letter-spacing="4">${j.code}</text><text x="90" y="174" text-anchor="middle" fill="${j.text}" font-family="Inter,sans-serif" font-weight="900" font-size="26">${j.num}</text></svg>`;
+}
+
+let cart = JSON.parse(localStorage.getItem('o2l-cart') || '[]');
+
+function cartTotal() { return cart.reduce((s,i) => s + i.price * i.qty, 0); }
+
+function removeItem(id, size) {
+  cart = cart.filter(i => !(i.id === id && i.size === size));
+  localStorage.setItem('o2l-cart', JSON.stringify(cart));
+  renderStep1();
+}
+
+function renderStep1() {
+  const el = document.getElementById('co-items');
+  const summary = document.getElementById('co-summary');
+  if (!el) return;
+  if (cart.length === 0) {
+    el.innerHTML = '<p class="cart-empty">Ton panier est vide. <a href="index.html" style="color:var(--vert-vif)">Retour à la boutique →</a></p>';
+    if (summary) summary.style.display = 'none';
+    return;
+  }
+  if (summary) summary.style.display = 'block';
+  const total = cartTotal();
+  document.getElementById('co-total').textContent = total + '€';
+  document.getElementById('co-shipping').textContent = total >= 60 ? 'Gratuite' : '4.90€';
+  el.innerHTML = cart.map(item => `
+    <div class="checkout-item">
+      <div class="checkout-item__svg">${buildJerseySVG(item.id)}</div>
+      <div class="checkout-item__info">
+        <p class="checkout-item__name">${item.name}</p>
+        <p class="checkout-item__meta">Taille : ${item.size} · Qté : ${item.qty}</p>
+        <span class="checkout-item__remove" data-id="${item.id}" data-size="${item.size}">Retirer</span>
+      </div>
+      <span class="checkout-item__price">${item.price * item.qty}€</span>
+    </div>`).join('');
+  document.querySelectorAll('.checkout-item__remove').forEach(btn => {
+    btn.addEventListener('click', () => removeItem(btn.dataset.id, btn.dataset.size));
+  });
+}
+
+function setStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById(`step${i}`)?.classList.toggle('active', i === n);
+    const ind = document.getElementById(`ind-${i}`);
+    if (ind) {
+      ind.classList.toggle('active', i === n);
+      ind.classList.toggle('done', i < n);
+    }
+  });
+}
+
+document.getElementById('toStep2')?.addEventListener('click', () => {
+  if (cart.length === 0) return;
+  setStep(2);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById('infoForm')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = this.querySelector('[name="email"]')?.value || 'ton@email.com';
+  const orderNum = '#O2L' + Math.random().toString(36).slice(2,8).toUpperCase();
+  document.getElementById('orderNum').textContent = orderNum;
+  document.getElementById('confirmEmail').textContent = email;
+  localStorage.removeItem('o2l-cart');
+  setStep(3);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+renderStep1();
+</script>
+</body>
+</html>
