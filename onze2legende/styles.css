@@ -557,6 +557,68 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
 .confirm-screen p strong { color: var(--blanc); }
 .confirm-screen .order-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--vert-vif); margin: 1.25rem 0 2rem; letter-spacing: 0.08em; }
 
+/* ══════════════════════════════════════════════════════════
+   FICHE PRODUIT (PDP)
+   ══════════════════════════════════════════════════════════ */
+.pdp { min-height: 100vh; background: var(--noir); padding-top: 92px; }
+.pdp-wrap { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+.pdp-back { display: inline-block; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); margin-bottom: 2rem; transition: color var(--transition); }
+.pdp-back:hover { color: var(--vert-vif); }
+.pdp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; }
+
+/* Galerie */
+.pdp-gallery { position: sticky; top: 110px; }
+.pdp-main {
+  position: relative; aspect-ratio: 1/1;
+  background: radial-gradient(circle at 50% 36%, #1d1d1d 0%, #0d0d0d 72%);
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.pdp-mannequin {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -47%);
+  width: 78%; opacity: 0.5; pointer-events: none; z-index: 0;
+}
+.pdp-mann-svg { width: 100%; height: auto; }
+.pdp-visual { position: relative; z-index: 1; width: 66%; display: flex; justify-content: center; }
+.pdp-jersey { width: 100%; height: auto; }
+.pdp-view-label {
+  position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 2;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gris); background: rgba(8,8,8,0.6); padding: 0.3rem 0.8rem;
+}
+.pdp-thumbs { display: flex; gap: 0.75rem; margin-top: 0.9rem; }
+.pdp-thumb {
+  position: relative; flex: 0 0 84px; height: 84px;
+  background: #0e0e0e; border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center; padding: 0.5rem;
+  transition: border-color var(--transition); overflow: hidden;
+}
+.pdp-thumb.active { border-color: var(--vert-vif); }
+.pdp-thumb svg, .pdp-thumb .jersey-photo-wrap { max-width: 80%; }
+.pdp-thumb span {
+  position: absolute; bottom: 3px; left: 0; right: 0; text-align: center;
+  font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gris);
+}
+.pdp-mann-note { font-size: 0.68rem; color: var(--gris); letter-spacing: 0.05em; margin-top: 0.9rem; text-align: center; }
+
+/* Infos */
+.pdp-nation { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--vert-vif); margin-bottom: 0.6rem; }
+.pdp-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.2rem, 4vw, 3.2rem); letter-spacing: 0.04em; color: var(--blanc); line-height: 1; margin-bottom: 0.9rem; }
+.pdp-rating { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.1rem; }
+.pdp-stars { color: var(--vert-vif); letter-spacing: 0.1em; font-size: 0.85rem; }
+.pdp-rating-text { font-size: 0.72rem; color: var(--gris); letter-spacing: 0.05em; }
+.pdp-price { font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; color: var(--blanc); letter-spacing: 0.04em; margin-bottom: 1.25rem; }
+.pdp-desc { font-size: 0.9rem; color: rgba(244,244,244,0.6); line-height: 1.8; margin-bottom: 2rem; }
+.pdp-size-block { margin-bottom: 1.5rem; }
+.pdp-size-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.8rem; }
+.pdp-size-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gris); }
+.pdp-size-warn { font-size: 0.7rem; color: #e8a13f; letter-spacing: 0.04em; margin-top: 0.6rem; visibility: hidden; }
+.pdp-add { font-size: 0.8rem; padding: 1.05rem; margin-bottom: 1.75rem; }
+.pdp-details { display: grid; gap: 0.7rem; }
+.pdp-details li { display: flex; gap: 0.6rem; font-size: 0.78rem; color: rgba(244,244,244,0.55); letter-spacing: 0.02em; }
+.pdp-details li span { color: var(--vert-vif); font-weight: 700; }
+
 /* ════════════════════════════════════════════════════
    RESPONSIVE
    ════════════════════════════════════════════════════ */
@@ -588,6 +650,9 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
   .section { padding: 4rem 0; }
   .checkout-container { padding: 2rem 1.25rem; }
   .form-row { grid-template-columns: 1fr; }
+  .pdp-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .pdp-gallery { position: static; top: auto; }
+  .pdp-wrap { padding: 1.5rem 1.25rem 4rem; }
 }
 
 @media (max-width: 640px) {

@@ -262,11 +262,16 @@ document.getElementById('modalOverlay')?.addEventListener('click', e => {
   if (e.target === document.getElementById('modalOverlay')) closeModal();
 });
 
-document.querySelectorAll('.size-trigger').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('.product-card');
-    openModal(card);
-  });
+/* Carte cliquable → fiche produit (avant + arrière) */
+document.querySelectorAll('.product-card[data-id]').forEach(card => {
+  const id = card.dataset.id;
+  const go = () => { location.href = 'produit.html?id=' + id; };
+  const img = card.querySelector('.product-card__img');
+  const name = card.querySelector('.product-card__name');
+  if (img) { img.style.cursor = 'pointer'; img.addEventListener('click', go); }
+  if (name) { name.style.cursor = 'pointer'; name.addEventListener('click', go); }
+  const btn = card.querySelector('.size-trigger');
+  if (btn) { btn.textContent = 'Voir le produit'; btn.addEventListener('click', go); }
 });
 
 document.querySelectorAll('.size-btn').forEach(btn => {

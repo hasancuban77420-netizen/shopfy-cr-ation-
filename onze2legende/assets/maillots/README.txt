@@ -8,16 +8,23 @@ reste affiché — aucun risque de "case vide".
 ------------------------------------------------------------
 NOMS DE FICHIERS EXACTS À UTILISER (dans ce dossier) :
 ------------------------------------------------------------
-  france-domicile.jpg     -> Maillot France domicile (carte 1)
-  france-exterieur.jpg    -> Maillot France extérieur (carte 2)
-  bresil.jpg              -> Brésil
-  argentine.jpg           -> Argentine
-  espagne.jpg             -> Espagne
-  portugal.jpg            -> Portugal
-  maroc.jpg               -> Maroc
-  allemagne.jpg           -> Allemagne
-  angleterre.jpg          -> Angleterre
-  italie.jpg              -> Italie
+  france-domicile.jpg     -> France domicile (AVANT)
+  france-exterieur.jpg    -> France extérieur (AVANT)
+  bresil.jpg              -> Brésil (AVANT)
+  argentine.jpg           -> Argentine (AVANT)
+  espagne.jpg             -> Espagne (AVANT)
+  portugal.jpg            -> Portugal (AVANT)
+  maroc.jpg               -> Maroc (AVANT)
+  allemagne.jpg           -> Allemagne (AVANT)
+  angleterre.jpg          -> Angleterre (AVANT)
+  italie.jpg              -> Italie (AVANT)
+
+PHOTOS DE DOS (face arrière, affichées sur la fiche produit) :
+ajoute "-dos" avant l'extension. Exemples :
+  france-domicile-dos.jpg, bresil-dos.jpg, argentine-dos.jpg, etc.
+La carte de la boutique montre l'AVANT ; la fiche produit montre
+AVANT + ARRIÈRE (clic sur les vignettes). Si une photo de dos manque,
+le maillot dessiné (dos) s'affiche à la place.
 
 Et pour la grande image d'accueil (hero), à placer dans le dossier PARENT
 onze2legende/assets/ (pas ici) :

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiche produit – Onze2Légende</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar" id="topbar">
+    <div class="rbar">
+      <div class="rbar__inner">
+        <span>Livraison offerte dès 60€</span>
+        <span class="rbar-sep">✦</span>
+        <span>Retours gratuits 30 jours</span>
+        <span class="rbar-sep">✦</span>
+        <span>Taille garantie ou remboursé</span>
+      </div>
+    </div>
+    <header class="header">
+      <div class="header__inner">
+        <a href="index.html" class="logo"><span class="logo__o2">ONZE2</span><span class="logo__leg">LÉGENDE</span></a>
+        <nav class="nav" id="nav">
+          <ul class="nav__list">
+            <li><a href="index.html#hero" class="nav__link">Accueil</a></li>
+            <li><a href="index.html#collection" class="nav__link">Collection</a></li>
+            <li><a href="index.html#france" class="nav__link">France</a></li>
+            <li><a href="index.html#univers" class="nav__link">Univers</a></li>
+          </ul>
+        </nav>
+        <button class="cart-btn" id="cartBtn" aria-label="Panier">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </header>
+  </div>
+
+  <!-- CART -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-sidebar__header">
+      <h2 class="cart-sidebar__title">Mon Panier</h2>
+      <button class="cart-close" id="cartClose" aria-label="Fermer">✕</button>
+    </div>
+    <div class="cart-sidebar__items" id="cartItems"><p class="cart-empty">Ton panier est vide.</p></div>
+    <div class="cart-sidebar__footer" id="cartFooter" style="display:none">
+      <div class="cart-total"><span>Total</span><span id="cartTotal">0€</span></div>
+      <a href="checkout.html" class="btn btn--green btn--full">Commander →</a>
+    </div>
+  </aside>
+
+  <main class="pdp">
+    <div class="pdp-wrap">
+      <a href="index.html#collection" class="pdp-back">← Retour à la collection</a>
+      <div class="pdp-grid">
+
+        <!-- GALERIE -->
+        <div class="pdp-gallery">
+          <div class="pdp-main">
+            <div class="pdp-mannequin" id="pdpMannequin"></div>
+            <div class="pdp-visual" id="pdpVisual"></div>
+            <span class="pdp-view-label" id="pdpViewLabel">Avant</span>
+          </div>
+          <div class="pdp-thumbs" id="pdpThumbs"></div>
+          <p class="pdp-mann-note">Présenté sur buste — sans mannequin visible</p>
+        </div>
+
+        <!-- INFOS -->
+        <div class="pdp-info">
+          <p class="pdp-nation" id="pdpNation"></p>
+          <h1 class="pdp-name" id="pdpName"></h1>
+          <div class="pdp-rating">
+            <span class="pdp-stars">★★★★★</span>
+            <span class="pdp-rating-text">4.9 / 5 · 312 avis</span>
+          </div>
+          <p class="pdp-price" id="pdpPrice"></p>
+          <p class="pdp-desc" id="pdpDesc"></p>
+
+          <div class="pdp-size-block">
+            <div class="pdp-size-head">
+              <h4 class="pdp-size-label">Taille</h4>
+              <a href="#" class="size-guide-link">Guide des tailles →</a>
+            </div>
+            <div class="size-options" id="sizeOptions">
+              <button class="size-btn" data-size="XS">XS</button>
+              <button class="size-btn" data-size="S">S</button>
+              <button class="size-btn" data-size="M">M</button>
+              <button class="size-btn" data-size="L">L</button>
+              <button class="size-btn" data-size="XL">XL</button>
+              <button class="size-btn" data-size="XXL">XXL</button>
+            </div>
+            <p class="pdp-size-warn" id="pdpSizeWarn">Choisis une taille pour continuer.</p>
+          </div>
+
+          <button class="btn btn--green btn--full pdp-add" id="pdpAdd">Ajouter au panier</button>
+
+          <ul class="pdp-details">
+            <li><span>✓</span> Maillot Coupe du Monde 2026 — qualité supporter</li>
+            <li><span>✓</span> Polyester technique respirant, séchage rapide</li>
+            <li><span>✓</span> Flocage nom + numéro disponible</li>
+            <li><span>✓</span> Livraison express 24–48h · Retours gratuits 30j</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+/* ── DATA JERSEYS ─────────────────────────────────────────── */
+const JERSEYS = {
+  1:  { body:'#13235B', sleeve:'#13235B', cuff:'#E1122B', collar:'#FFFFFF', text:'#FFFFFF', num:'10', name:'MBAPPÉ',    code:'FRA', stars:2, starCol:'#FFD24A' },
+  2:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#E1122B', collar:'#13235B', text:'#13235B', num:'7',  name:'GRIEZMANN', code:'FRA', stars:2, starCol:'#13235B' },
+  3:  { body:'#FFD800', sleeve:'#FFD800', cuff:'#009C3B', collar:'#009C3B', text:'#002776', num:'10', name:'VINI JR',   code:'BRA', stars:5, starCol:'#002776' },
+  4:  { body:null,      sleeve:null,      cuff:'#75AADB', collar:'#75AADB', text:'#0A2A66', num:'10', name:'MESSI',     code:'ARG', stars:3, starCol:'#FFD24A', pattern:'stripes-ar' },
+  5:  { body:'#C60B1E', sleeve:'#C60B1E', cuff:'#F1BF00', collar:'#F1BF00', text:'#FFFFFF', num:'19', name:'YAMAL',     code:'ESP', stars:1, starCol:'#FFD24A' },
+  6:  { body:'#C4161C', sleeve:'#C4161C', cuff:'#0B6E33', collar:'#0B6E33', text:'#FFE14A', num:'7',  name:'RONALDO',   code:'POR', stars:0, starCol:'#FFD24A' },
+  7:  { body:'#C1272D', sleeve:'#C1272D', cuff:'#0A6B3B', collar:'#0A6B3B', text:'#FFFFFF', num:'2',  name:'HAKIMI',    code:'MAR', stars:0, starCol:'#FFD24A' },
+  8:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#1A1A1A', collar:'#1A1A1A', text:'#1A1A1A', num:'10', name:'MUSIALA',   code:'GER', stars:4, starCol:'#1A1A1A' },
+  9:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#CF081F', collar:'#CF081F', text:'#0A1F5C', num:'10', name:'BELLINGHAM',code:'ENG', stars:1, starCol:'#CF081F' },
+  10: { body:'#1B4FA0', sleeve:'#1B4FA0', cuff:'#FFFFFF', collar:'#FFFFFF', text:'#FFFFFF', num:'14', name:'CHIESA',    code:'ITA', stars:4, starCol:'#FFD24A' },
+};
+
+const PRODUCTS = {
+  1:  { name:'Maillot France Domicile 2026',     price:75, nation:'France',     slug:'france-domicile' },
+  2:  { name:'Maillot France Extérieur 2026',    price:75, nation:'France',     slug:'france-exterieur' },
+  3:  { name:'Maillot Brésil Domicile 2026',     price:70, nation:'Brésil',     slug:'bresil' },
+  4:  { name:'Maillot Argentine Domicile 2026',  price:70, nation:'Argentine',  slug:'argentine' },
+  5:  { name:'Maillot Espagne Domicile 2026',    price:70, nation:'Espagne',    slug:'espagne' },
+  6:  { name:'Maillot Portugal Domicile 2026',   price:70, nation:'Portugal',   slug:'portugal' },
+  7:  { name:'Maillot Maroc Domicile 2026',      price:68, nation:'Maroc',      slug:'maroc' },
+  8:  { name:'Maillot Allemagne Domicile 2026',  price:70, nation:'Allemagne',  slug:'allemagne' },
+  9:  { name:'Maillot Angleterre Domicile 2026', price:70, nation:'Angleterre', slug:'angleterre' },
+  10: { name:'Maillot Italie Domicile 2026',     price:68, nation:'Italie',     slug:'italie' },
+};
+
+/* ── HELPERS SVG ──────────────────────────────────────────── */
+let _svgUID = 0;
+function shadeColor(hex, p) {
+  hex = (hex || '#cccccc').replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  let r = parseInt(hex.slice(0,2),16), g = parseInt(hex.slice(2,4),16), b = parseInt(hex.slice(4,6),16);
+  const t = p < 0 ? 0 : 255, a = Math.abs(p);
+  r = Math.round((t-r)*a + r); g = Math.round((t-g)*a + g); b = Math.round((t-b)*a + b);
+  const h = v => v.toString(16).padStart(2,'0');
+  return '#' + h(r) + h(g) + h(b);
+}
+
+function buildJerseySVG(id, cssClass, side) {
+  const j = JERSEYS[id];
+  if (!j) return '';
+  const uid = 'p' + (_svgUID++);
+  const cls = cssClass || 'jersey-svg';
+  const base = j.body || '#ffffff';
+  const top = shadeColor(base, 0.16), bot = shadeColor(base, -0.16), edge = shadeColor(base, -0.30);
+  const stars = '★'.repeat(j.stars || 0);
+  let bodyFill = `url(#grad_${uid})`, sleeveFill = `url(#sgr_${uid})`;
+  let defs = `<linearGradient id="grad_${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${top}"/><stop offset="48%" stop-color="${base}"/><stop offset="100%" stop-color="${bot}"/></linearGradient><linearGradient id="sgr_${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${shadeColor(j.sleeve||base,0.10)}"/><stop offset="100%" stop-color="${shadeColor(j.sleeve||base,-0.22)}"/></linearGradient><filter id="sh_${uid}" x="-30%" y="-20%" width="160%" height="155%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#000" flood-opacity="0.45"/></filter>`;
+  if (j.pattern === 'stripes-ar') {
+    defs += `<pattern id="pat_${uid}" width="26" height="12" patternUnits="userSpaceOnUse"><rect width="26" height="12" fill="#ffffff"/><rect width="13" height="12" fill="#75AADB"/></pattern>`;
+    bodyFill = `url(#pat_${uid})`; sleeveFill = `url(#pat_${uid})`;
+  }
+  const front = side === 'front';
+  const centerMark = front
+    ? `${stars ? `<text x="100" y="86" text-anchor="middle" fill="${j.starCol}" font-family="serif" font-size="11" letter-spacing="2">${stars}</text>` : ''}
+       <path d="M86,112 L114,112 L114,134 Q114,148 100,154 Q86,148 86,134 Z" fill="none" stroke="${j.text}" stroke-width="1.6"/>
+       <text x="100" y="132" text-anchor="middle" fill="${j.text}" font-family="Inter,sans-serif" font-weight="800" font-size="9" letter-spacing="1.5">${j.code}</text>`
+    : `${stars ? `<text x="100" y="80" text-anchor="middle" fill="${j.starCol}" font-family="serif" font-size="11" letter-spacing="2">${stars}</text>` : ''}
+       <path id="arc_${uid}" d="M58,110 Q100,98 142,110" fill="none"/>
+       <text fill="${j.text}" font-family="Inter,sans-serif" font-weight="800" font-size="13" letter-spacing="1"><textPath href="#arc_${uid}" startOffset="50%" text-anchor="middle">${j.name || j.code}</textPath></text>
+       <text x="100" y="176" text-anchor="middle" fill="${j.text}" font-family="Inter,sans-serif" font-weight="900" font-size="54">${j.num}</text>`;
+  return `<svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" class="${cls}"><defs>${defs}</defs>
+    <g filter="url(#sh_${uid})">
+      <path d="M64,32 L30,22 L10,60 L42,64 Z" fill="${sleeveFill}" stroke="${edge}" stroke-width="0.5"/>
+      <path d="M136,32 L170,22 L190,60 L158,64 Z" fill="${sleeveFill}" stroke="${edge}" stroke-width="0.5"/>
+      <path d="M10,60 L30,22 L36,25 L16,63 Z" fill="${j.cuff}"/>
+      <path d="M190,60 L170,22 L164,25 L184,63 Z" fill="${j.cuff}"/>
+      <path d="M64,32 L42,64 L50,198 Q50,206 58,206 L142,206 Q150,206 150,198 L158,64 L136,32 L100,54 Z" fill="${bodyFill}" stroke="${edge}" stroke-width="0.6"/>
+      <path d="M100,54 L86,202 L114,202 Z" fill="#ffffff" opacity="0.05"/>
+      <path d="M64,32 Q100,20 136,32 L100,54 Z" fill="${j.collar}"/>
+    </g>
+    ${centerMark}</svg>`;
+}
+
+function jerseyVisual(id, imgPath, svgClass, alt, fit, side) {
+  const svg = buildJerseySVG(id, svgClass, side);
+  if (!imgPath) return svg;
+  const fitCls = fit === 'contain' ? ' jersey-photo--contain' : '';
+  return `<div class="jersey-photo-wrap">${svg}<img class="jersey-photo${fitCls}" src="${imgPath}" alt="${alt||''}" loading="lazy" onerror="this.remove()"></div>`;
+}
+
+function mannequinSVG() {
+  return `<svg viewBox="0 0 200 300" class="pdp-mann-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#cdcdcd"/><stop offset="100%" stop-color="#8f8f8f"/></linearGradient></defs>
+    <ellipse cx="100" cy="289" rx="46" ry="9" fill="#000" opacity="0.25"/>
+    <rect x="95" y="196" width="10" height="86" rx="3" fill="url(#mg)"/>
+    <path d="M68,46 Q100,30 132,46 Q152,55 150,92 Q148,152 118,198 L82,198 Q52,152 50,92 Q48,55 68,46 Z" fill="url(#mg)"/>
+    <path d="M88,28 Q100,20 112,28 L113,48 Q100,54 87,48 Z" fill="url(#mg)"/>
+    <ellipse cx="100" cy="27" rx="13" ry="5" fill="#dadada"/>
+  </svg>`;
+}
+
+/* ── INIT PRODUCT ─────────────────────────────────────────── */
+const params = new URLSearchParams(location.search);
+let pid = parseInt(params.get('id'));
+if (!PRODUCTS[pid]) pid = 1;
+const product = PRODUCTS[pid];
+
+document.getElementById('pdpNation').textContent = product.nation;
+document.getElementById('pdpName').textContent = product.name;
+document.getElementById('pdpPrice').textContent = product.price + '€';
+document.getElementById('pdpDesc').textContent =
+  `Le maillot ${product.nation} pour la Coupe du Monde 2026. Coupe supporter confortable, tissu technique respirant. Porte les couleurs de ta nation, du stade à la rue.`;
+document.title = product.name + ' – Onze2Légende';
+
+const frontImg = `assets/maillots/${product.slug}.jpg`;
+const backImg  = `assets/maillots/${product.slug}-dos.jpg`;
+
+document.getElementById('pdpMannequin').innerHTML = mannequinSVG();
+
+const visualEl = document.getElementById('pdpVisual');
+const labelEl = document.getElementById('pdpViewLabel');
+function showSide(side) {
+  const img = side === 'back' ? backImg : frontImg;
+  visualEl.innerHTML = jerseyVisual(pid, img, 'jersey-svg pdp-jersey', product.name + ' ' + side, 'contain', side);
+  labelEl.textContent = side === 'back' ? 'Arrière' : 'Avant';
+  document.querySelectorAll('.pdp-thumb').forEach(t => t.classList.toggle('active', t.dataset.side === side));
+}
+
+document.getElementById('pdpThumbs').innerHTML = `
+  <button class="pdp-thumb active" data-side="front">${jerseyVisual(pid, frontImg, 'jersey-svg', 'avant', 'contain', 'front')}<span>Avant</span></button>
+  <button class="pdp-thumb" data-side="back">${jerseyVisual(pid, backImg, 'jersey-svg', 'arrière', 'contain', 'back')}<span>Arrière</span></button>`;
+document.querySelectorAll('.pdp-thumb').forEach(t => t.addEventListener('click', () => showSide(t.dataset.side)));
+showSide('front');
+
+/* ── SIZE + ADD TO CART ───────────────────────────────────── */
+let selectedSize = null;
+document.querySelectorAll('.size-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedSize = btn.dataset.size;
+    document.getElementById('pdpSizeWarn').style.visibility = 'hidden';
+  });
+});
+
+let cart = JSON.parse(localStorage.getItem('o2l-cart') || '[]');
+function saveCart() { localStorage.setItem('o2l-cart', JSON.stringify(cart)); }
+function cartTotal() { return cart.reduce((s,i) => s + i.price * i.qty, 0); }
+function updateCartCount() { document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0); }
+
+document.getElementById('pdpAdd').addEventListener('click', () => {
+  if (!selectedSize) { document.getElementById('pdpSizeWarn').style.visibility = 'visible'; return; }
+  const ex = cart.find(i => i.id == pid && i.size === selectedSize);
+  if (ex) ex.qty += 1;
+  else cart.push({ id: String(pid), name: product.name, price: product.price, size: selectedSize, qty: 1 });
+  saveCart(); renderCart(); updateCartCount(); openCart();
+  showToast(`${product.name} (${selectedSize}) ajouté !`);
+});
+
+/* ── CART UI ──────────────────────────────────────────────── */
+const cartSidebar = document.getElementById('cartSidebar');
+const cartOverlay = document.getElementById('cartOverlay');
+function openCart() { cartSidebar.classList.add('open'); cartOverlay.classList.add('active'); document.body.style.overflow='hidden'; }
+function closeCart() { cartSidebar.classList.remove('open'); cartOverlay.classList.remove('active'); document.body.style.overflow=''; }
+document.getElementById('cartBtn').addEventListener('click', openCart);
+document.getElementById('cartClose').addEventListener('click', closeCart);
+cartOverlay.addEventListener('click', closeCart);
+
+function removeFromCart(id, size) { cart = cart.filter(i => !(i.id == id && i.size === size)); saveCart(); renderCart(); updateCartCount(); }
+function renderCart() {
+  const itemsEl = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+  if (cart.length === 0) { itemsEl.innerHTML = '<p class="cart-empty">Ton panier est vide.</p>'; footerEl.style.display='none'; return; }
+  footerEl.style.display = 'block';
+  document.getElementById('cartTotal').textContent = cartTotal() + '€';
+  itemsEl.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item__svg-wrap">${buildJerseySVG(item.id, 'jersey-svg')}</div>
+      <div class="cart-item__info">
+        <p class="cart-item__name">${item.name}</p>
+        <p class="cart-item__meta">Taille : ${item.size} · Qté : ${item.qty}</p>
+        <p class="cart-item__price">${item.price * item.qty}€</p>
+        <button class="cart-item__remove" data-id="${item.id}" data-size="${item.size}">Retirer</button>
+      </div>
+    </div>`).join('');
+  itemsEl.querySelectorAll('.cart-item__remove').forEach(b => b.addEventListener('click', () => removeFromCart(b.dataset.id, b.dataset.size)));
+}
+
+/* ── TOAST ────────────────────────────────────────────────── */
+const toastEl = document.getElementById('toast');
+let toastTimer;
+function showToast(msg) { clearTimeout(toastTimer); toastEl.textContent = msg; toastEl.classList.add('show'); toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600); }
+
+renderCart();
+updateCartCount();
+</script>
+</body>
+</html>
