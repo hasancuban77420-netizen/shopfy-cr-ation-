@@ -101,9 +101,9 @@ function buildJerseySVG(id, cssClass) {
    le SVG reste affiché (repli automatique). */
 function imgPathFor(card) {
   const id = card.dataset.id;
-  if (id === '1') return 'assets/maillots/france-domicile.jpg';
-  if (id === '2') return 'assets/maillots/france-exterieur.jpg';
-  return 'assets/maillots/' + card.dataset.nation + '.jpg';
+  if (id === '1') return 'assets/maillots/france-domicile.webp';
+  if (id === '2') return 'assets/maillots/france-exterieur.webp';
+  return 'assets/maillots/' + card.dataset.nation + '.webp';
 }
 
 /* Construit le visuel : SVG dessiné + (si dispo) photo réelle par-dessus.
@@ -134,7 +134,7 @@ function renderCardJerseys() {
 /* ── RENDER HERO JERSEY ───────────────────────────────────── */
 function renderHeroJersey() {
   const el = document.getElementById('heroJersey');
-  if (el) el.innerHTML = jerseyVisual(1, 'assets/hero-france.jpg', 'jersey-svg jersey-svg--hero', 'Maillot France', 'contain');
+  if (el) el.innerHTML = jerseyVisual(1, 'assets/maillots/france-domicile.webp', 'jersey-svg jersey-svg--hero', 'Maillot France', 'contain');
 }
 
 /* ── FRANCE SHOWCASE ──────────────────────────────────────── */

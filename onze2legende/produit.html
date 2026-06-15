@@ -134,7 +134,7 @@ const JERSEYS = {
 };
 
 const PRODUCTS = {
-  1:  { name:'Maillot France Domicile 2026',     price:75, nation:'France',     slug:'france-domicile' },
+  1:  { name:'Maillot France Domicile 2026',     price:75, nation:'France',     slug:'france-domicile', detail:true },
   2:  { name:'Maillot France Extérieur 2026',    price:75, nation:'France',     slug:'france-exterieur' },
   3:  { name:'Maillot Brésil Domicile 2026',     price:70, nation:'Brésil',     slug:'bresil' },
   4:  { name:'Maillot Argentine Domicile 2026',  price:70, nation:'Argentine',  slug:'argentine' },
@@ -225,23 +225,43 @@ document.getElementById('pdpDesc').textContent =
   `Le maillot ${product.nation} pour la Coupe du Monde 2026. Coupe supporter confortable, tissu technique respirant. Porte les couleurs de ta nation, du stade à la rue.`;
 document.title = product.name + ' – Onze2Légende';
 
-const frontImg = `assets/maillots/${product.slug}.jpg`;
-const backImg  = `assets/maillots/${product.slug}-dos.jpg`;
+const IMG = {
+  front:  `assets/maillots/${product.slug}.webp`,
+  back:   `assets/maillots/${product.slug}-dos.webp`,
+  detail: `assets/maillots/${product.slug}-detail.webp`,
+};
+const SIDE_SVG = { front: 'front', back: 'back', detail: 'front' };
+const SIDE_LABEL = { front: 'Avant', back: 'Arrière', detail: 'Détail' };
 
 document.getElementById('pdpMannequin').innerHTML = mannequinSVG();
 
 const visualEl = document.getElementById('pdpVisual');
 const labelEl = document.getElementById('pdpViewLabel');
+const mannEl = document.getElementById('pdpMannequin');
 function showSide(side) {
-  const img = side === 'back' ? backImg : frontImg;
-  visualEl.innerHTML = jerseyVisual(pid, img, 'jersey-svg pdp-jersey', product.name + ' ' + side, 'contain', side);
-  labelEl.textContent = side === 'back' ? 'Arrière' : 'Avant';
+  visualEl.innerHTML = jerseyVisual(pid, IMG[side], 'jersey-svg pdp-jersey', product.name + ' ' + side, 'contain', SIDE_SVG[side]);
+  labelEl.textContent = SIDE_LABEL[side];
   document.querySelectorAll('.pdp-thumb').forEach(t => t.classList.toggle('active', t.dataset.side === side));
+  // Le buste n'apparaît que derrière le maillot DESSINÉ (repli), pas derrière une vraie photo.
+  const img = visualEl.querySelector('.jersey-photo');
+  const note = document.querySelector('.pdp-mann-note');
+  const setMann = (visible) => {
+    mannEl.style.display = visible ? 'block' : 'none';
+    if (note) note.style.visibility = visible ? 'visible' : 'hidden';
+  };
+  setMann(true);
+  if (img) {
+    if (img.complete && img.naturalWidth > 0) setMann(false);
+    img.addEventListener('load', () => setMann(false));
+    img.addEventListener('error', () => setMann(true));
+  }
 }
 
-document.getElementById('pdpThumbs').innerHTML = `
-  <button class="pdp-thumb active" data-side="front">${jerseyVisual(pid, frontImg, 'jersey-svg', 'avant', 'contain', 'front')}<span>Avant</span></button>
-  <button class="pdp-thumb" data-side="back">${jerseyVisual(pid, backImg, 'jersey-svg', 'arrière', 'contain', 'back')}<span>Arrière</span></button>`;
+const sides = ['front', 'back'];
+if (product.detail) sides.push('detail');
+document.getElementById('pdpThumbs').innerHTML = sides.map((s, i) =>
+  `<button class="pdp-thumb${i === 0 ? ' active' : ''}" data-side="${s}">${jerseyVisual(pid, IMG[s], 'jersey-svg', SIDE_LABEL[s], 'contain', SIDE_SVG[s])}<span>${SIDE_LABEL[s]}</span></button>`
+).join('');
 document.querySelectorAll('.pdp-thumb').forEach(t => t.addEventListener('click', () => showSide(t.dataset.side)));
 showSide('front');
 
