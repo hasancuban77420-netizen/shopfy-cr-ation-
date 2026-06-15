@@ -121,15 +121,15 @@
 
 /* ── DATA JERSEYS ─────────────────────────────────────────── */
 const JERSEYS = {
-  1:  { body:'#13235B', sleeve:'#13235B', cuff:'#E1122B', collar:'#FFFFFF', text:'#FFFFFF', num:'10', name:'MBAPPÉ',    code:'FRA', stars:2, starCol:'#FFD24A' },
-  2:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#E1122B', collar:'#13235B', text:'#13235B', num:'7',  name:'GRIEZMANN', code:'FRA', stars:2, starCol:'#13235B' },
-  3:  { body:'#FFD800', sleeve:'#FFD800', cuff:'#009C3B', collar:'#009C3B', text:'#002776', num:'10', name:'VINI JR',   code:'BRA', stars:5, starCol:'#002776' },
-  4:  { body:null,      sleeve:null,      cuff:'#75AADB', collar:'#75AADB', text:'#0A2A66', num:'10', name:'MESSI',     code:'ARG', stars:3, starCol:'#FFD24A', pattern:'stripes-ar' },
-  5:  { body:'#C60B1E', sleeve:'#C60B1E', cuff:'#F1BF00', collar:'#F1BF00', text:'#FFFFFF', num:'19', name:'YAMAL',     code:'ESP', stars:1, starCol:'#FFD24A' },
-  6:  { body:'#C4161C', sleeve:'#C4161C', cuff:'#0B6E33', collar:'#0B6E33', text:'#FFE14A', num:'7',  name:'RONALDO',   code:'POR', stars:0, starCol:'#FFD24A' },
-  7:  { body:'#C1272D', sleeve:'#C1272D', cuff:'#0A6B3B', collar:'#0A6B3B', text:'#FFFFFF', num:'2',  name:'HAKIMI',    code:'MAR', stars:0, starCol:'#FFD24A' },
-  8:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#1A1A1A', collar:'#1A1A1A', text:'#1A1A1A', num:'10', name:'MUSIALA',   code:'GER', stars:4, starCol:'#1A1A1A' },
-  9:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#CF081F', collar:'#CF081F', text:'#0A1F5C', num:'10', name:'BELLINGHAM',code:'ENG', stars:1, starCol:'#CF081F' },
+  1:  { body:'#0B1B42', sleeve:'#0B1B42', cuff:'#E1122B', collar:'#FFFFFF', text:'#FFFFFF', num:'10', name:'MBAPPÉ',    code:'FRA', stars:2, starCol:'#D4AF37', pattern:'diag-fra' },
+  2:  { body:'#F0F0F0', sleeve:'#F0F0F0', cuff:'#E1122B', collar:'#0B1B42', text:'#0B1B42', num:'7',  name:'GRIEZMANN', code:'FRA', stars:2, starCol:'#D4AF37', pattern:'diag-fra' },
+  3:  { body:'#F7D000', sleeve:'#F7D000', cuff:'#009C3B', collar:'#009C3B', text:'#003087', num:'10', name:'VINI JR',   code:'BRA', stars:5, starCol:'#003087' },
+  4:  { body:'#74ACDF', sleeve:'#74ACDF', cuff:'#74ACDF', collar:'#74ACDF', text:'#0A2A66', num:'10', name:'MESSI',     code:'ARG', stars:3, starCol:'#FFD24A', pattern:'stripes-ar' },
+  5:  { body:'#C60B1E', sleeve:'#C60B1E', cuff:'#F1BF00', collar:'#F1BF00', text:'#FFFFFF', num:'19', name:'YAMAL',     code:'ESP', stars:1, starCol:'#F1BF00' },
+  6:  { body:'#C4161C', sleeve:'#C4161C', cuff:'#006600', collar:'#006600', text:'#FFE14A', num:'7',  name:'RONALDO',   code:'POR', stars:0, starCol:'#FFE14A' },
+  7:  { body:'#C1272D', sleeve:'#C1272D', cuff:'#006633', collar:'#006633', text:'#FFFFFF', num:'2',  name:'HAKIMI',    code:'MAR', stars:0, starCol:'#FFD24A' },
+  8:  { body:'#EFEFEF', sleeve:'#EFEFEF', cuff:'#1A1A1A', collar:'#1A1A1A', text:'#1A1A1A', num:'10', name:'MUSIALA',   code:'GER', stars:4, starCol:'#1A1A1A' },
+  9:  { body:'#F5F5F5', sleeve:'#F5F5F5', cuff:'#CF081F', collar:'#CF081F', text:'#0A1F5C', num:'10', name:'BELLINGHAM',code:'ENG', stars:1, starCol:'#CF081F' },
   10: { body:'#1B4FA0', sleeve:'#1B4FA0', cuff:'#FFFFFF', collar:'#FFFFFF', text:'#FFFFFF', num:'14', name:'CHIESA',    code:'ITA', stars:4, starCol:'#FFD24A' },
 };
 
@@ -161,35 +161,57 @@ function shadeColor(hex, p) {
 function buildJerseySVG(id, cssClass, side) {
   const j = JERSEYS[id];
   if (!j) return '';
-  const uid = 'p' + (_svgUID++);
-  const cls = cssClass || 'jersey-svg';
-  const base = j.body || '#ffffff';
-  const top = shadeColor(base, 0.16), bot = shadeColor(base, -0.16), edge = shadeColor(base, -0.30);
-  const stars = '★'.repeat(j.stars || 0);
-  let bodyFill = `url(#grad_${uid})`, sleeveFill = `url(#sgr_${uid})`;
-  let defs = `<linearGradient id="grad_${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${top}"/><stop offset="48%" stop-color="${base}"/><stop offset="100%" stop-color="${bot}"/></linearGradient><linearGradient id="sgr_${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${shadeColor(j.sleeve||base,0.10)}"/><stop offset="100%" stop-color="${shadeColor(j.sleeve||base,-0.22)}"/></linearGradient><filter id="sh_${uid}" x="-30%" y="-20%" width="160%" height="155%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#000" flood-opacity="0.45"/></filter>`;
+  const uid  = 'p' + (_svgUID++);
+  const cls  = cssClass || 'jersey-svg';
+  const base = j.body || '#cccccc';
+  const slBase = j.sleeve || base;
+  const sc   = j.starCol || '#FFD24A';
+  const tc   = j.text    || '#ffffff';
+  const sl   = (hex, p) => shadeColor(hex, p);
+  let defs = `<linearGradient id="bg_${uid}" x1="0.18" y1="0" x2="0.82" y2="1"><stop offset="0%" stop-color="${sl(base,0.22)}"/><stop offset="42%" stop-color="${base}"/><stop offset="100%" stop-color="${sl(base,-0.28)}"/></linearGradient><linearGradient id="slg_${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${sl(slBase,0.16)}"/><stop offset="100%" stop-color="${sl(slBase,-0.32)}"/></linearGradient><filter id="sh_${uid}" x="-28%" y="-12%" width="156%" height="148%"><feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#000" flood-opacity="0.52"/></filter>`;
+  let bodyFill = `url(#bg_${uid})`, sleeveFill = `url(#slg_${uid})`;
   if (j.pattern === 'stripes-ar') {
-    defs += `<pattern id="pat_${uid}" width="26" height="12" patternUnits="userSpaceOnUse"><rect width="26" height="12" fill="#ffffff"/><rect width="13" height="12" fill="#75AADB"/></pattern>`;
-    bodyFill = `url(#pat_${uid})`; sleeveFill = `url(#pat_${uid})`;
+    defs += `<pattern id="par_${uid}" width="16" height="1" patternUnits="userSpaceOnUse"><rect width="16" height="1" fill="#fff"/><rect width="8" height="1" fill="#74ACDF"/></pattern>`;
+    bodyFill = sleeveFill = `url(#par_${uid})`;
   }
-  const front = side === 'front';
-  const centerMark = front
-    ? `${stars ? `<text x="100" y="86" text-anchor="middle" fill="${j.starCol}" font-family="serif" font-size="11" letter-spacing="2">${stars}</text>` : ''}
-       <path d="M86,112 L114,112 L114,134 Q114,148 100,154 Q86,148 86,134 Z" fill="none" stroke="${j.text}" stroke-width="1.6"/>
-       <text x="100" y="132" text-anchor="middle" fill="${j.text}" font-family="Inter,sans-serif" font-weight="800" font-size="9" letter-spacing="1.5">${j.code}</text>`
-    : `${stars ? `<text x="100" y="80" text-anchor="middle" fill="${j.starCol}" font-family="serif" font-size="11" letter-spacing="2">${stars}</text>` : ''}
-       <path id="arc_${uid}" d="M58,110 Q100,98 142,110" fill="none"/>
-       <text fill="${j.text}" font-family="Inter,sans-serif" font-weight="800" font-size="13" letter-spacing="1"><textPath href="#arc_${uid}" startOffset="50%" text-anchor="middle">${j.name || j.code}</textPath></text>
-       <text x="100" y="176" text-anchor="middle" fill="${j.text}" font-family="Inter,sans-serif" font-weight="900" font-size="54">${j.num}</text>`;
-  return `<svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" class="${cls}"><defs>${defs}</defs>
+  if (j.pattern === 'diag-fra') {
+    const isLight = parseInt(base.replace('#','').slice(0,2),16) > 180;
+    const stripe = isLight ? sl(base,-0.09) : sl(base,0.10);
+    defs += `<pattern id="pdia_${uid}" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(45 100 120)"><rect width="20" height="20" fill="${base}"/><rect width="10" height="20" fill="${stripe}"/></pattern>`;
+    bodyFill = sleeveFill = `url(#pdia_${uid})`;
+  }
+  const ns = Math.min(j.stars || 0, 5);
+  const bx = 132, by = 90, br = 13, stY = by - br - 4;
+  let starsHTML = '';
+  if (ns > 0) {
+    const fs = ns >= 4 ? 7 : 9, gap = ns >= 4 ? 9 : 12;
+    const stX0 = bx - (ns * gap)/2 + gap/2;
+    for (let i = 0; i < ns; i++) starsHTML += `<text x="${stX0+i*gap}" y="${stY}" text-anchor="middle" fill="${sc}" font-family="serif" font-size="${fs}">★</text>`;
+  }
+  const collarAccent = j.cuff !== j.collar ? `<path d="M75,42 Q100,30 125,42 L124,46 Q100,34 76,46 Z" fill="${j.cuff}" opacity="0.80"/>` : '';
+  const sheen = `<path d="M82,56 Q100,52 118,66 L116,90 Q100,74 80,82 Z" fill="#fff" opacity="0.045"/>`;
+  const isFront = side !== 'back';
+  const centerMark = isFront
+    ? `${starsHTML}
+       <circle cx="${bx}" cy="${by}" r="${br}" fill="${sc}" opacity="0.90"/>
+       <text x="${bx}" y="${by+4}" text-anchor="middle" fill="${base}" font-family="Inter,sans-serif" font-weight="900" font-size="6">${j.code}</text>
+       <path d="M${68-9},${90+5} C${68+3},${90-8} ${68+17},${90-1} ${68+15},${90+6} C${68+11},${90+11} ${68-1},${90+7} ${68-9},${90+5} Z" fill="${sc}" opacity="0.88"/>`
+    : `${starsHTML}
+       <path id="narc_${uid}" d="M40,142 Q100,130 160,142" fill="none"/>
+       <text fill="${tc}" font-family="Inter,sans-serif" font-weight="800" font-size="12" letter-spacing="1"><textPath href="#narc_${uid}" startOffset="50%" text-anchor="middle">${j.name||j.code}</textPath></text>
+       <text x="100" y="213" text-anchor="middle" fill="${tc}" font-family="Inter,sans-serif" font-weight="900" font-size="62" opacity="0.11">${j.num}</text>
+       <text x="100" y="213" text-anchor="middle" fill="${tc}" font-family="Inter,sans-serif" font-weight="900" font-size="62">${j.num}</text>`;
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" class="${cls}" aria-hidden="true"><defs>${defs}</defs>
     <g filter="url(#sh_${uid})">
-      <path d="M64,32 L30,22 L10,60 L42,64 Z" fill="${sleeveFill}" stroke="${edge}" stroke-width="0.5"/>
-      <path d="M136,32 L170,22 L190,60 L158,64 Z" fill="${sleeveFill}" stroke="${edge}" stroke-width="0.5"/>
-      <path d="M10,60 L30,22 L36,25 L16,63 Z" fill="${j.cuff}"/>
-      <path d="M190,60 L170,22 L164,25 L184,63 Z" fill="${j.cuff}"/>
-      <path d="M64,32 L42,64 L50,198 Q50,206 58,206 L142,206 Q150,206 150,198 L158,64 L136,32 L100,54 Z" fill="${bodyFill}" stroke="${edge}" stroke-width="0.6"/>
-      <path d="M100,54 L86,202 L114,202 Z" fill="#ffffff" opacity="0.05"/>
-      <path d="M64,32 Q100,20 136,32 L100,54 Z" fill="${j.collar}"/>
+      <path d="M62,40 L24,22 L4,72 L40,78 Z" fill="${sleeveFill}" stroke="${sl(slBase,-0.28)}" stroke-width="0.5"/>
+      <path d="M138,40 L176,22 L196,72 L160,78 Z" fill="${sleeveFill}" stroke="${sl(slBase,-0.28)}" stroke-width="0.5"/>
+      <path d="M4,72 L24,22 L30,27 L10,76 Z" fill="${j.cuff}"/>
+      <path d="M196,72 L176,22 L170,27 L190,76 Z" fill="${j.cuff}"/>
+      <path d="M62,40 L40,78 L44,230 Q44,237 53,237 L147,237 Q156,237 156,230 L160,78 L138,40 L100,56 Z" fill="${bodyFill}" stroke="${sl(base,-0.28)}" stroke-width="0.5"/>
+      ${sheen}
+      <path d="M62,40 Q100,24 138,40 L100,56 Z" fill="${j.collar}"/>
+      <path d="M74,41 Q100,28 126,41 L100,52 Z" fill="${sl(j.collar,-0.20)}" opacity="0.55"/>
+      ${collarAccent}
     </g>
     ${centerMark}</svg>`;
 }
