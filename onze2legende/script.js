@@ -95,13 +95,33 @@ function buildJerseySVG(id, cssClass) {
 </svg>`;
 }
 
+/* ── PHOTO PATH PAR PRODUIT ───────────────────────────────── */
+/* Dépose tes photos dans onze2legende/assets/maillots/ avec ces noms
+   exacts. Si le fichier existe, il remplace le maillot dessiné ; sinon
+   le SVG reste affiché (repli automatique). */
+function imgPathFor(card) {
+  const id = card.dataset.id;
+  if (id === '1') return 'assets/maillots/france-domicile.jpg';
+  if (id === '2') return 'assets/maillots/france-exterieur.jpg';
+  return 'assets/maillots/' + card.dataset.nation + '.jpg';
+}
+
+/* Construit le visuel : SVG dessiné + (si dispo) photo réelle par-dessus.
+   onerror retire la photo manquante => le SVG reste visible. */
+function jerseyVisual(id, imgPath, svgClass, alt, fit) {
+  const svg = buildJerseySVG(id, svgClass);
+  if (!imgPath) return svg;
+  const fitCls = fit === 'contain' ? ' jersey-photo--contain' : '';
+  return `<div class="jersey-photo-wrap">${svg}<img class="jersey-photo${fitCls}" src="${imgPath}" alt="${alt || ''}" loading="lazy" onerror="this.remove()"></div>`;
+}
+
 /* ── RENDER ALL CARD JERSEYS ──────────────────────────────── */
 function renderCardJerseys() {
   document.querySelectorAll('.product-card[data-id]').forEach(card => {
     const id = card.dataset.id;
     const imgDiv = card.querySelector('.product-card__img');
     if (!imgDiv || imgDiv.querySelector('svg')) return;
-    imgDiv.innerHTML = buildJerseySVG(id, 'jersey-svg jersey-svg--card');
+    imgDiv.innerHTML = jerseyVisual(id, imgPathFor(card), 'jersey-svg jersey-svg--card', card.dataset.name, 'cover');
     if (card.dataset.badge) {
       const b = document.createElement('span');
       b.className = 'product-card__badge';
@@ -114,7 +134,7 @@ function renderCardJerseys() {
 /* ── RENDER HERO JERSEY ───────────────────────────────────── */
 function renderHeroJersey() {
   const el = document.getElementById('heroJersey');
-  if (el) el.innerHTML = buildJerseySVG(1, 'jersey-svg jersey-svg--hero');
+  if (el) el.innerHTML = jerseyVisual(1, 'assets/hero-france.jpg', 'jersey-svg jersey-svg--hero', 'Maillot France', 'contain');
 }
 
 /* ── FRANCE SHOWCASE ──────────────────────────────────────── */
@@ -217,6 +237,7 @@ function openModal(card) {
     name: card.dataset.name,
     price: parseInt(card.dataset.price),
     nation: card.dataset.nationLabel || card.dataset.nation,
+    img: imgPathFor(card),
   };
   selectedSize = null;
   const overlay = document.getElementById('modalOverlay');
@@ -224,7 +245,7 @@ function openModal(card) {
   document.getElementById('modalNation').textContent = currentProduct.nation;
   document.getElementById('modalPrice').textContent = currentProduct.price + '€';
   const wrap = document.getElementById('modalJerseyWrap');
-  if (wrap) wrap.innerHTML = buildJerseySVG(currentProduct.id, 'jersey-svg');
+  if (wrap) wrap.innerHTML = jerseyVisual(currentProduct.id, currentProduct.img, 'jersey-svg', currentProduct.name, 'contain');
   document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
   document.getElementById('confirmAdd').disabled = true;
   overlay.classList.add('open');

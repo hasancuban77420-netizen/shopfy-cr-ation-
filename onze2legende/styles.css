@@ -216,6 +216,16 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
 .btn--sm { padding: 0.6rem 1.3rem; font-size: 0.65rem; letter-spacing: 0.12em; }
 .btn--full { width: 100%; }
 
+/* ── JERSEY VISUAL (SVG + photo optionnelle) ─────────────── */
+.jersey-photo-wrap { position: relative; display: inline-block; line-height: 0; max-width: 100%; }
+.jersey-photo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  background: #0e0e0e;
+}
+.jersey-photo--contain { object-fit: contain; background: transparent; }
+
 /* ── JERSEY SVG ──────────────────────────────────────────── */
 .jersey-svg { width: 100%; height: auto; }
 .jersey-svg--card { max-width: 160px; }
