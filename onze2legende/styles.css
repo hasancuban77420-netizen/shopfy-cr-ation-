@@ -218,7 +218,7 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
 
 /* ── JERSEY SVG ──────────────────────────────────────────── */
 .jersey-svg { width: 100%; height: auto; }
-.jersey-svg--card { max-width: 120px; }
+.jersey-svg--card { max-width: 160px; }
 .jersey-svg--hero { max-width: 340px; filter: drop-shadow(0 20px 60px rgba(63,193,114,0.25)) drop-shadow(0 0 40px rgba(63,193,114,0.1)); }
 .jersey-svg--france-show { max-width: 150px; }
 
@@ -340,9 +340,11 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
 .product-card:hover { transform: translateY(-5px); border-color: #333; box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
 
 .product-card__img {
-  position: relative; background: #0e0e0e; aspect-ratio: 1/1;
+  position: relative;
+  background: radial-gradient(circle at 50% 38%, #1c1c1c 0%, #0e0e0e 72%);
+  aspect-ratio: 1/1;
   display: flex; align-items: center; justify-content: center;
-  overflow: hidden; padding: 2rem;
+  overflow: hidden; padding: 1.25rem;
   border-bottom: 1px solid var(--border);
 }
 

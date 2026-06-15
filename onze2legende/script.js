@@ -2,60 +2,96 @@
 
 /* ── JERSEY DATA ──────────────────────────────────────────── */
 const JERSEYS = {
-  1:  { body:'#00209F', sleeve:'#00209F', cuff:'#EF3340', collar:'#FFFFFF', text:'#FFFFFF', num:'10', code:'FRA', stars:2, starCol:'#FFD700', cuffAccent:'#EF3340' },
-  2:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#EF3340', collar:'#00209F', text:'#00209F', num:'9',  code:'FRA', stars:2, starCol:'#00209F', cuffAccent:'#EF3340' },
-  3:  { body:'#FFD700', sleeve:'#FFD700', cuff:'#009C3B', collar:'#009C3B', text:'#002776', num:'10', code:'BRA', stars:5, starCol:'#002776' },
-  4:  { body:null, sleeve:null, cuff:'#74ACDF', collar:'#74ACDF', text:'#002868', num:'10', code:'ARG', stars:3, starCol:'#FFD700', pattern:'stripes-ar' },
-  5:  { body:'#C60B1E', sleeve:'#C60B1E', cuff:'#F1BF00', collar:'#F1BF00', text:'#FFFFFF', num:'10', code:'ESP', stars:1, starCol:'#FFD700' },
-  6:  { body:'#C4161C', sleeve:'#C4161C', cuff:'#006600', collar:'#006600', text:'#FFFFFF', num:'7',  code:'POR', stars:0, starCol:'#FFD700' },
-  7:  { body:'#C1272D', sleeve:'#C1272D', cuff:'#006233', collar:'#006233', text:'#FFFFFF', num:'22', code:'MAR', stars:0, starCol:'#FFD700' },
-  8:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#1a1a1a', collar:'#1a1a1a', text:'#1a1a1a', num:'8',  code:'GER', stars:4, starCol:'#1a1a1a' },
-  9:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#CF081F', collar:'#CF081F', text:'#CF081F', num:'9',  code:'ENG', stars:1, starCol:'#CF081F' },
-  10: { body:'#003DA5', sleeve:'#003DA5', cuff:'#FFFFFF', collar:'#FFFFFF', text:'#FFFFFF', num:'10', code:'ITA', stars:4, starCol:'#FFD700' },
+  1:  { body:'#13235B', sleeve:'#13235B', cuff:'#E1122B', collar:'#FFFFFF', text:'#FFFFFF', num:'10', name:'MBAPPÉ',    code:'FRA', stars:2, starCol:'#FFD24A' },
+  2:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#E1122B', collar:'#13235B', text:'#13235B', num:'7',  name:'GRIEZMANN', code:'FRA', stars:2, starCol:'#13235B' },
+  3:  { body:'#FFD800', sleeve:'#FFD800', cuff:'#009C3B', collar:'#009C3B', text:'#002776', num:'10', name:'VINI JR',   code:'BRA', stars:5, starCol:'#002776' },
+  4:  { body:null,      sleeve:null,      cuff:'#75AADB', collar:'#75AADB', text:'#0A2A66', num:'10', name:'MESSI',     code:'ARG', stars:3, starCol:'#FFD24A', pattern:'stripes-ar' },
+  5:  { body:'#C60B1E', sleeve:'#C60B1E', cuff:'#F1BF00', collar:'#F1BF00', text:'#FFFFFF', num:'19', name:'YAMAL',     code:'ESP', stars:1, starCol:'#FFD24A' },
+  6:  { body:'#C4161C', sleeve:'#C4161C', cuff:'#0B6E33', collar:'#0B6E33', text:'#FFE14A', num:'7',  name:'RONALDO',   code:'POR', stars:0, starCol:'#FFD24A' },
+  7:  { body:'#C1272D', sleeve:'#C1272D', cuff:'#0A6B3B', collar:'#0A6B3B', text:'#FFFFFF', num:'2',  name:'HAKIMI',    code:'MAR', stars:0, starCol:'#FFD24A' },
+  8:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#1A1A1A', collar:'#1A1A1A', text:'#1A1A1A', num:'10', name:'MUSIALA',   code:'GER', stars:4, starCol:'#1A1A1A' },
+  9:  { body:'#FFFFFF', sleeve:'#FFFFFF', cuff:'#CF081F', collar:'#CF081F', text:'#0A1F5C', num:'10', name:'BELLINGHAM',code:'ENG', stars:1, starCol:'#CF081F' },
+  10: { body:'#1B4FA0', sleeve:'#1B4FA0', cuff:'#FFFFFF', collar:'#FFFFFF', text:'#FFFFFF', num:'14', name:'CHIESA',    code:'ITA', stars:4, starCol:'#FFD24A' },
 };
 
-/* ── BUILD JERSEY SVG ─────────────────────────────────────── */
+/* ── COLOR HELPER ─────────────────────────────────────────── */
+let _svgUID = 0;
+function shadeColor(hex, p) {
+  hex = (hex || '#cccccc').replace('#', '');
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  let r = parseInt(hex.slice(0,2),16), g = parseInt(hex.slice(2,4),16), b = parseInt(hex.slice(4,6),16);
+  const t = p < 0 ? 0 : 255, a = Math.abs(p);
+  r = Math.round((t-r)*a + r); g = Math.round((t-g)*a + g); b = Math.round((t-b)*a + b);
+  const h = v => v.toString(16).padStart(2,'0');
+  return '#' + h(r) + h(g) + h(b);
+}
+
+/* ── BUILD JERSEY SVG (réaliste, flocage nom + numéro) ─────── */
 function buildJerseySVG(id, cssClass) {
   const j = JERSEYS[id];
   if (!j) return '';
-  const uid = `j${id}_${Math.random().toString(36).slice(2,6)}`;
-  const starsStr = '★'.repeat(j.stars);
+  const uid = 'js' + (_svgUID++);
   const cls = cssClass || 'jersey-svg';
+  const base = j.body || '#ffffff';
+  const top = shadeColor(base, 0.16);
+  const bot = shadeColor(base, -0.16);
+  const edge = shadeColor(base, -0.30);
+  const stars = '★'.repeat(j.stars || 0);
+  const name = j.name || j.code;
 
-  let bodyParts = '';
+  let bodyFill = `url(#grad_${uid})`;
+  let sleeveFill = `url(#sgr_${uid})`;
+
+  let defs = `
+    <linearGradient id="grad_${uid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${top}"/>
+      <stop offset="48%" stop-color="${base}"/>
+      <stop offset="100%" stop-color="${bot}"/>
+    </linearGradient>
+    <linearGradient id="sgr_${uid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${shadeColor(j.sleeve || base, 0.10)}"/>
+      <stop offset="100%" stop-color="${shadeColor(j.sleeve || base, -0.22)}"/>
+    </linearGradient>
+    <filter id="sh_${uid}" x="-30%" y="-20%" width="160%" height="155%">
+      <feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#000" flood-opacity="0.45"/>
+    </filter>`;
+
   if (j.pattern === 'stripes-ar') {
-    bodyParts = `
-    <defs>
-      <pattern id="sp_${uid}" x="0" y="0" width="22" height="200" patternUnits="userSpaceOnUse">
-        <rect x="0"  y="0" width="11" height="200" fill="#74ACDF"/>
-        <rect x="11" y="0" width="11" height="200" fill="#ffffff"/>
-      </pattern>
-      <mask id="sm_${uid}">
-        <path d="M58,28 L30,58 L30,186 L150,186 L150,58 L122,28 L90,52 Z" fill="white"/>
-        <path d="M28,14 L5,50 L30,58 L58,28 Z" fill="white"/>
-        <path d="M152,14 L175,50 L150,58 L122,28 Z" fill="white"/>
-      </mask>
-    </defs>
-    <rect x="0" y="0" width="180" height="200" fill="url(#sp_${uid})" mask="url(#sm_${uid})"/>`;
-  } else {
-    bodyParts = `
-    <path d="M58,28 L30,58 L30,186 L150,186 L150,58 L122,28 L90,52 Z" fill="${j.body}"/>
-    <path d="M28,14 L5,50 L30,58 L58,28 Z" fill="${j.sleeve}"/>
-    <path d="M152,14 L175,50 L150,58 L122,28 Z" fill="${j.sleeve}"/>`;
+    defs += `<pattern id="pat_${uid}" width="26" height="12" patternUnits="userSpaceOnUse">
+      <rect width="26" height="12" fill="#ffffff"/>
+      <rect width="13" height="12" fill="#75AADB"/>
+    </pattern>`;
+    bodyFill = `url(#pat_${uid})`;
+    sleeveFill = `url(#pat_${uid})`;
   }
 
-  const cuffPart = j.cuff ? `
-    <path d="M5,50 L28,14 L34,17 L11,53 Z" fill="${j.cuff}"/>
-    <path d="M175,50 L152,14 L146,17 L169,53 Z" fill="${j.cuff}"/>` : '';
+  const sleeveL = 'M64,32 L30,22 L10,60 L42,64 Z';
+  const sleeveR = 'M136,32 L170,22 L190,60 L158,64 Z';
+  const cuffL = 'M10,60 L30,22 L36,25 L16,63 Z';
+  const cuffR = 'M190,60 L170,22 L164,25 L184,63 Z';
+  const bodyPath = 'M64,32 L42,64 L50,198 Q50,206 58,206 L142,206 Q150,206 150,198 L158,64 L136,32 L100,54 Z';
+  const collarOuter = 'M64,32 Q100,20 136,32 L100,54 Z';
+  const collarInner = 'M73,33 Q100,24 127,33 L100,47 Z';
 
-  return `<svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg" class="${cls}">
-  ${bodyParts}
-  ${cuffPart}
-  <path d="M58,28 Q74,18 90,16 Q106,18 122,28 L90,52 Z" fill="${j.collar}"/>
-  ${starsStr ? `<text x="69" y="68" fill="${j.starCol}" font-family="serif" font-size="9" letter-spacing="3">${starsStr}</text>` : ''}
-  <circle cx="68" cy="82" r="8" fill="${j.collar}" opacity="0.18" stroke="${j.text}" stroke-width="0.6"/>
-  <text x="90" y="148" text-anchor="middle" fill="${j.text}" font-family="'Inter',sans-serif" font-weight="800" font-size="11" letter-spacing="4">${j.code}</text>
-  <text x="90" y="174" text-anchor="middle" fill="${j.text}" font-family="'Inter',sans-serif" font-weight="900" font-size="26">${j.num}</text>
+  return `<svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" class="${cls}">
+  <defs>${defs}</defs>
+  <g filter="url(#sh_${uid})">
+    <path d="${sleeveL}" fill="${sleeveFill}" stroke="${edge}" stroke-width="0.5"/>
+    <path d="${sleeveR}" fill="${sleeveFill}" stroke="${edge}" stroke-width="0.5"/>
+    <path d="${cuffL}" fill="${j.cuff}"/>
+    <path d="${cuffR}" fill="${j.cuff}"/>
+    <path d="${bodyPath}" fill="${bodyFill}" stroke="${edge}" stroke-width="0.6"/>
+    <path d="M100,54 L86,202 L114,202 Z" fill="#ffffff" opacity="0.05"/>
+    <path d="${collarOuter}" fill="${j.collar}"/>
+    <path d="${collarInner}" fill="${shadeColor(j.collar, -0.18)}" opacity="0.55"/>
+  </g>
+  ${stars ? `<text x="100" y="80" text-anchor="middle" fill="${j.starCol}" font-family="serif" font-size="11" letter-spacing="2">${stars}</text>` : ''}
+  <path id="arc_${uid}" d="M58,110 Q100,98 142,110" fill="none"/>
+  <text fill="${j.text}" font-family="Inter,sans-serif" font-weight="800" font-size="13" letter-spacing="1">
+    <textPath href="#arc_${uid}" startOffset="50%" text-anchor="middle">${name}</textPath>
+  </text>
+  <text x="101" y="178" text-anchor="middle" fill="${shadeColor(j.text, -0.25)}" font-family="Inter,sans-serif" font-weight="900" font-size="54" opacity="0.45">${j.num}</text>
+  <text x="100" y="176" text-anchor="middle" fill="${j.text}" font-family="Inter,sans-serif" font-weight="900" font-size="54">${j.num}</text>
 </svg>`;
 }
 
@@ -95,7 +131,7 @@ function renderUniversVisual() {
   const el = document.getElementById('universVisual');
   if (!el) return;
   el.innerHTML = `<div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;align-items:center;padding:1.5rem;">
-    ${[3,4,5].map(id => `<div style="width:72px">${buildJerseySVG(id,'jersey-svg')}</div>`).join('')}
+    ${[3,4,5].map(id => `<div style="width:78px">${buildJerseySVG(id,'jersey-svg')}</div>`).join('')}
   </div>`;
 }
 
@@ -105,7 +141,6 @@ let cart = JSON.parse(localStorage.getItem('o2l-cart') || '[]');
 function saveCart() { localStorage.setItem('o2l-cart', JSON.stringify(cart)); }
 
 function addToCart(product) {
-  const key = `${product.id}-${product.size}`;
   const existing = cart.find(i => i.id === product.id && i.size === product.size);
   if (existing) { existing.qty += 1; }
   else { cart.push({ ...product, qty: 1 }); }
