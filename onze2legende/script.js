@@ -180,10 +180,61 @@ function renderCardJerseys() {
   });
 }
 
-/* ── RENDER HERO JERSEY ───────────────────────────────────── */
+/* ── RENDER HERO ──────────────────────────────────────────── */
+/* Tente d'abord la vidéo (générée via Google Flow), repli auto sur le
+   carrousel d'images si le fichier n'existe pas encore. Dépose tes
+   vidéos dans onze2legende/assets/ :
+     hero-maillots-portrait.mp4  -> format vertical 9:16 (mobile + tablette)
+     hero-maillots-paysage.mp4   -> format paysage/carré (ordinateur) */
 function renderHeroJersey() {
   const el = document.getElementById('heroJersey');
   if (!el) return;
+
+  const dotsEl  = document.getElementById('heroDots');
+  const labelEl = document.getElementById('heroLabel');
+  const reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const portrait = window.matchMedia('(max-width: 900px)').matches;
+  const videoSrc = portrait
+    ? 'assets/hero-maillots-portrait.mp4'
+    : 'assets/hero-maillots-paysage.mp4';
+
+  let settled = false;
+  function fallback() {
+    if (settled) return;
+    settled = true;
+    renderHeroCarousel(el, dotsEl, labelEl, reduce);
+  }
+
+  const video = document.createElement('video');
+  video.className = 'hero-video';
+  video.muted = true;
+  video.loop = true;
+  video.autoplay = !reduce;
+  video.playsInline = true;
+  video.setAttribute('muted', '');
+  video.setAttribute('playsinline', '');
+  video.setAttribute('webkit-playsinline', '');
+  video.preload = 'auto';
+  video.poster = 'assets/maillots/france-domicile-cut.webp';
+
+  video.addEventListener('loadeddata', () => {
+    if (settled) return;
+    settled = true;
+    el.innerHTML = '';
+    el.appendChild(video);
+    if (dotsEl)  dotsEl.innerHTML = '';
+    if (labelEl) labelEl.textContent = 'Collection 2026';
+    if (!reduce) video.play().catch(() => {});
+  });
+  video.addEventListener('error', fallback);
+  video.src = videoSrc;
+  // Filet de sécurité : si la vidéo est absente (404 silencieux), on bascule.
+  setTimeout(fallback, 2200);
+}
+
+/* ── CARROUSEL HERO (repli sans vidéo) ────────────────────── */
+function renderHeroCarousel(el, dotsEl, labelEl, reduce) {
   const frames = [
     { img: 'assets/maillots/france-domicile-cut.webp',     label: 'Avant' },
     { img: 'assets/maillots/france-domicile-dos-cut.webp', label: 'Dos' },
@@ -193,8 +244,6 @@ function renderHeroJersey() {
     `<img class="hero-shot${i === 0 ? ' active' : ''}${f.frame ? ' hero-shot--framed' : ''}" src="${f.img}" alt="Maillot France ${f.label}" data-label="${f.label}" onerror="this.dataset.failed='1';this.remove()">`
   ).join('');
 
-  const dotsEl = document.getElementById('heroDots');
-  const labelEl = document.getElementById('heroLabel');
   const shots = [...el.querySelectorAll('.hero-shot')];
 
   // Repli : si aucune photo ne charge, on retombe sur le maillot dessiné.
@@ -219,7 +268,6 @@ function renderHeroJersey() {
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
     if (labelEl) labelEl.textContent = 'France Domicile · ' + shots[idx].dataset.label;
   }
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function start() { if (!reduce && shots.length > 1) timer = setInterval(() => go(idx + 1), 3200); }
   function stop() { clearInterval(timer); timer = null; }
   dots.forEach(d => d.addEventListener('click', () => { go(+d.dataset.i); stop(); start(); }));

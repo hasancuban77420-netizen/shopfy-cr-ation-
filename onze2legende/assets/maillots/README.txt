@@ -42,3 +42,20 @@ CONSEILS PHOTO :
 
 Une fois les fichiers déposés sur GitHub dans ce dossier, le site les
 prend en compte automatiquement au prochain déploiement (~2 min).
+
+------------------------------------------------------------
+VIDÉO D'ACCUEIL (HERO) — Google Flow / autre :
+------------------------------------------------------------
+À placer dans le dossier PARENT onze2legende/assets/ (PAS dans maillots/) :
+  hero-maillots-portrait.mp4   -> format VERTICAL 9:16  (mobile + tablette)
+  hero-maillots-paysage.mp4    -> format PAYSAGE 16:9 ou carré (ordinateur)
+
+Le site choisit automatiquement le bon format selon l'écran. Si une vidéo
+manque, le carrousel d'images du maillot France s'affiche à la place
+(aucun risque de case vide).
+
+Conseils export vidéo :
+- Boucle courte 3-6 s qui tourne sans coupure visible.
+- Fond sombre ou transparent (thème noir du site).
+- Compresse : vise moins de 5 Mo par fichier (chargement mobile rapide).
+- La vidéo est lue en muet + autoplay + loop (obligatoire pour mobile).

@@ -302,6 +302,28 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
 .hero-shot.active { opacity: 1; transform: rotateY(0deg) scale(1); }
 .hero-shot--framed { object-fit: cover; border-radius: 16px; }
 
+/* Vidéo hero (Google Flow) — remplace le carrousel quand le fichier existe */
+.hero-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 18px;
+  filter: drop-shadow(0 28px 52px rgba(0,0,0,0.6)) drop-shadow(0 0 60px rgba(63,193,114,0.16));
+}
+/* Quand une vidéo est chargée : pas de flottement, ratio adapté au format */
+.hero__jersey-wrap:has(.hero-video) {
+  animation: none;
+  aspect-ratio: 9 / 16;              /* portrait sur mobile + tablette */
+  width: clamp(240px, 74vw, 380px);
+}
+@media (min-width: 901px) {
+  .hero__jersey-wrap:has(.hero-video) {
+    aspect-ratio: 16 / 10;           /* paysage sur ordinateur */
+    width: clamp(380px, 40vw, 560px);
+  }
+}
+
 .hero-dots { display: flex; gap: 0.55rem; margin-top: 1.6rem; z-index: 2; }
 .hero-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(244,244,244,0.25); transition: background var(--transition), transform var(--transition); }
 .hero-dot:hover { background: rgba(244,244,244,0.5); }
