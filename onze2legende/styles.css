@@ -280,29 +280,81 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
 
 .hero__showcase { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-/* Carrousel maillot — fond transparent, grand, flip 3D avant/dos/détail */
+/* ── HERO SHOWCASE — mode cinématique ────────────────────── */
 .hero__jersey-wrap {
   position: relative;
   width: clamp(260px, 33vw, 440px);
   aspect-ratio: 4 / 5;
-  perspective: 1100px;
   animation: jerseyFloat 6s ease-in-out infinite;
 }
-.hero-shot {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: contain;
-  opacity: 0;
-  transform: rotateY(42deg) scale(0.9);
-  transition: opacity 0.85s cubic-bezier(0.4,0,0.2,1), transform 0.85s cubic-bezier(0.4,0,0.2,1);
-  backface-visibility: hidden;
-  filter: drop-shadow(0 26px 44px rgba(0,0,0,0.55)) drop-shadow(0 0 48px rgba(63,193,114,0.18));
-  pointer-events: none;
+.hero__jersey-wrap.cine-mode {
+  animation: none;        /* chaque scène a sa propre animation caméra */
+  overflow: visible;
 }
-.hero-shot.active { opacity: 1; transform: rotateY(0deg) scale(1); }
-.hero-shot--framed { object-fit: cover; border-radius: 16px; }
 
-/* Vidéo hero (Google Flow) — remplace le carrousel quand le fichier existe */
+/* ── SCÈNES ── */
+.cine-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+.cine-scene.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── IMAGE DANS LA SCÈNE ── */
+.cine-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  will-change: transform;
+  transform-origin: center center;
+  filter:
+    drop-shadow(0 28px 52px rgba(0,0,0,0.70))
+    drop-shadow(0 0 60px rgba(63,193,114,0.16));
+}
+.cine-img--framed {
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+/* ── MOUVEMENTS DE CAMÉRA ── */
+/* Scène 1 : Reveal — maillot entre en rotation, se stabilise et fait un léger zoom */
+.cine-scene[data-cam="reveal"].active .cine-img {
+  animation: camReveal 5.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+/* Scène 2 : Zoom — push-in cinéma sur le détail (écusson, coutures) */
+.cine-scene[data-cam="zoom"].active .cine-img {
+  animation: camZoom 4.5s cubic-bezier(0.2, 0, 0.1, 1) forwards;
+}
+/* Scène 3 : Pan — glisse depuis la droite, légère contre-rotation */
+.cine-scene[data-cam="pan"].active .cine-img {
+  animation: camPan 5.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes camReveal {
+  0%   { transform: scale(0.84) rotate(5deg) translateY(4%); }
+  18%  { transform: scale(1.01) rotate(-0.5deg) translateY(0); }
+  100% { transform: scale(1.07) rotate(-1deg) translateY(-1%); }
+}
+@keyframes camZoom {
+  0%   { transform: scale(1.0) translate(0, 0); }
+  100% { transform: scale(1.52) translate(-5%, 4%); }
+}
+@keyframes camPan {
+  0%   { transform: scale(0.88) translateX(7%) rotate(-3deg); }
+  16%  { transform: scale(1.0) translateX(0) rotate(0.3deg); }
+  100% { transform: scale(1.06) translateX(-3%) rotate(-0.6deg); }
+}
+
+/* ── VIDÉO HERO (Google Flow) ── */
 .hero-video {
   display: block;
   width: 100%;
@@ -311,27 +363,37 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
   border-radius: 18px;
   filter: drop-shadow(0 28px 52px rgba(0,0,0,0.6)) drop-shadow(0 0 60px rgba(63,193,114,0.16));
 }
-/* Quand une vidéo est chargée : pas de flottement, ratio adapté au format */
 .hero__jersey-wrap:has(.hero-video) {
   animation: none;
-  aspect-ratio: 9 / 16;              /* portrait sur mobile + tablette */
+  aspect-ratio: 9 / 16;
   width: clamp(240px, 74vw, 380px);
 }
 @media (min-width: 901px) {
   .hero__jersey-wrap:has(.hero-video) {
-    aspect-ratio: 16 / 10;           /* paysage sur ordinateur */
+    aspect-ratio: 16 / 10;
     width: clamp(380px, 40vw, 560px);
   }
 }
 
+/* ── DOTS ── */
 .hero-dots { display: flex; gap: 0.55rem; margin-top: 1.6rem; z-index: 2; }
-.hero-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(244,244,244,0.25); transition: background var(--transition), transform var(--transition); }
+.hero-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(244,244,244,0.25);
+  transition: background var(--transition), transform var(--transition), width var(--transition);
+}
 .hero-dot:hover { background: rgba(244,244,244,0.5); }
-.hero-dot.active { background: var(--vert-vif); transform: scale(1.3); }
+.hero-dot.active { background: var(--vert-vif); transform: scale(1.35); }
 
 @keyframes jerseyFloat {
   0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-  50% { transform: translateY(-16px) rotate(1.5deg); }
+  50%       { transform: translateY(-16px) rotate(1.5deg); }
+}
+
+/* Pas d'animation si l'utilisateur le préfère */
+@media (prefers-reduced-motion: reduce) {
+  .cine-scene[data-cam] .cine-img { animation: none !important; }
+  .cine-scene { transition: none !important; }
 }
 
 .hero__jersey-label {

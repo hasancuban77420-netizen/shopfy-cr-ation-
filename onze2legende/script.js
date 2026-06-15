@@ -181,11 +181,7 @@ function renderCardJerseys() {
 }
 
 /* ── RENDER HERO ──────────────────────────────────────────── */
-/* Tente d'abord la vidéo (générée via Google Flow), repli auto sur le
-   carrousel d'images si le fichier n'existe pas encore. Dépose tes
-   vidéos dans onze2legende/assets/ :
-     hero-maillots-portrait.mp4  -> format vertical 9:16 (mobile + tablette)
-     hero-maillots-paysage.mp4   -> format paysage/carré (ordinateur) */
+/* Tente d'abord la vidéo (Google Flow), repli cinématique sur les photos. */
 function renderHeroJersey() {
   const el = document.getElementById('heroJersey');
   if (!el) return;
@@ -203,7 +199,7 @@ function renderHeroJersey() {
   function fallback() {
     if (settled) return;
     settled = true;
-    renderHeroCarousel(el, dotsEl, labelEl, reduce);
+    renderCineCarousel(el, dotsEl, labelEl, reduce);
   }
 
   const video = document.createElement('video');
@@ -217,7 +213,6 @@ function renderHeroJersey() {
   video.setAttribute('webkit-playsinline', '');
   video.preload = 'auto';
   video.poster = 'assets/maillots/france-domicile-cut.webp';
-
   video.addEventListener('loadeddata', () => {
     if (settled) return;
     settled = true;
@@ -229,52 +224,105 @@ function renderHeroJersey() {
   });
   video.addEventListener('error', fallback);
   video.src = videoSrc;
-  // Filet de sécurité : si la vidéo est absente (404 silencieux), on bascule.
   setTimeout(fallback, 2200);
 }
 
-/* ── CARROUSEL HERO (repli sans vidéo) ────────────────────── */
-function renderHeroCarousel(el, dotsEl, labelEl, reduce) {
-  const frames = [
-    { img: 'assets/maillots/france-domicile-cut.webp',     label: 'Avant' },
-    { img: 'assets/maillots/france-domicile-dos-cut.webp', label: 'Dos' },
-    { img: 'assets/maillots/france-domicile-detail.webp',  label: 'Détail', frame: true },
+/* ── CINEMATIC HERO (animation CSS-driven multi-scènes) ────── */
+function renderCineCarousel(el, dotsEl, labelEl, reduce) {
+
+  /* Scènes : chaque cam donne un mouvement de caméra différent.
+     La durée indique combien de temps la scène reste pleinement visible. */
+  const SCENES = [
+    { src: 'assets/maillots/france-domicile-cut.webp',     cam: 'reveal', dur: 3800, label: 'France · Avant' },
+    { src: 'assets/maillots/france-domicile-detail.webp',  cam: 'zoom',   dur: 2900, label: 'France · Détail', framed: true },
+    { src: 'assets/maillots/france-domicile-dos-cut.webp', cam: 'pan',    dur: 3800, label: 'France · Dos' },
   ];
-  el.innerHTML = frames.map((f, i) =>
-    `<img class="hero-shot${i === 0 ? ' active' : ''}${f.frame ? ' hero-shot--framed' : ''}" src="${f.img}" alt="Maillot France ${f.label}" data-label="${f.label}" onerror="this.dataset.failed='1';this.remove()">`
-  ).join('');
+  const FADE = 750; // ms de crossfade entre scènes
 
-  const shots = [...el.querySelectorAll('.hero-shot')];
+  el.classList.add('cine-mode');
 
-  // Repli : si aucune photo ne charge, on retombe sur le maillot dessiné.
-  setTimeout(() => {
-    if (!el.querySelector('.hero-shot')) {
+  /* Construire les éléments DOM */
+  const nodes = SCENES.map((s, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'cine-scene';
+    wrap.dataset.cam = s.cam;
+
+    const img = document.createElement('img');
+    img.className = 'cine-img' + (s.framed ? ' cine-img--framed' : '');
+    img.src = s.src;
+    img.alt = s.label;
+    img.loading = i === 0 ? 'eager' : 'lazy';
+    img.addEventListener('error', () => wrap.dataset.dead = '1');
+    wrap.appendChild(img);
+    el.appendChild(wrap);
+    return wrap;
+  });
+
+  /* Fallback SVG si aucune image ne charge (1.8s) */
+  const svgTimer = setTimeout(() => {
+    if (!el.querySelector('.cine-scene:not([data-dead])')) {
+      el.classList.remove('cine-mode');
       el.innerHTML = buildJerseySVG(1, 'jersey-svg jersey-svg--hero');
       if (dotsEl) dotsEl.innerHTML = '';
     }
-  }, 1500);
+  }, 1800);
 
+  /* Petits points indicateurs */
   if (dotsEl) {
-    dotsEl.innerHTML = shots.map((s, i) =>
-      `<button class="hero-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Vue ${s.dataset.label}"></button>`
+    dotsEl.innerHTML = SCENES.map((s, i) =>
+      `<button class="hero-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="${s.label}"></button>`
     ).join('');
   }
   const dots = dotsEl ? [...dotsEl.querySelectorAll('.hero-dot')] : [];
 
-  let idx = 0, timer = null;
-  function go(n) {
-    idx = (n + shots.length) % shots.length;
-    shots.forEach((s, i) => s.classList.toggle('active', i === idx));
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    if (labelEl) labelEl.textContent = 'France Domicile · ' + shots[idx].dataset.label;
+  let current = 0, ticker = null;
+
+  /* Redémarre l'animation CSS d'un élément (trick double rAF) */
+  function restartAnim(img) {
+    img.style.animation = 'none';
+    requestAnimationFrame(() => requestAnimationFrame(() => { img.style.animation = ''; }));
   }
-  function start() { if (!reduce && shots.length > 1) timer = setInterval(() => go(idx + 1), 3200); }
-  function stop() { clearInterval(timer); timer = null; }
-  dots.forEach(d => d.addEventListener('click', () => { go(+d.dataset.i); stop(); start(); }));
-  el.addEventListener('mouseenter', stop);
-  el.addEventListener('mouseleave', start);
-  go(0); start();
+
+  function go(n) {
+    clearTimeout(svgTimer);
+    clearTimeout(ticker);
+    const live = nodes.filter(nd => !nd.dataset.dead);
+    if (!live.length) return;
+
+    const prev = live[current % live.length];
+    current = ((n % live.length) + live.length) % live.length;
+    const next = live[current];
+
+    /* Fade out l'ancien, fade in le nouveau */
+    if (prev !== next) prev.classList.remove('active');
+    restartAnim(next.querySelector('.cine-img'));
+    next.classList.add('active');
+
+    /* Label */
+    const scene = SCENES[nodes.indexOf(next)] || SCENES[0];
+    if (labelEl) labelEl.textContent = scene.label;
+
+    /* Dots */
+    const ni = nodes.indexOf(next);
+    dots.forEach((d, i) => d.classList.toggle('active', i === ni));
+
+    /* Auto-avance */
+    if (!reduce) ticker = setTimeout(() => go(current + 1), scene.dur + FADE);
+  }
+
+  /* Navigation manuelle (dots) */
+  dots.forEach(d => d.addEventListener('click', () => go(+d.dataset.i)));
+  el.addEventListener('mouseenter', () => clearTimeout(ticker));
+  el.addEventListener('mouseleave', () => {
+    if (!reduce) {
+      const scene = SCENES[nodes.indexOf(nodes.filter(nd=>!nd.dataset.dead)[current])] || SCENES[0];
+      ticker = setTimeout(() => go(current + 1), scene.dur);
+    }
+  });
+
+  go(0);
 }
+
 
 /* ── FRANCE SHOWCASE ──────────────────────────────────────── */
 function renderFranceShowcase() {
