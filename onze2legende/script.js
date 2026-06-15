@@ -134,7 +134,49 @@ function renderCardJerseys() {
 /* ── RENDER HERO JERSEY ───────────────────────────────────── */
 function renderHeroJersey() {
   const el = document.getElementById('heroJersey');
-  if (el) el.innerHTML = jerseyVisual(1, 'assets/maillots/france-domicile.webp', 'jersey-svg jersey-svg--hero', 'Maillot France', 'contain');
+  if (!el) return;
+  const frames = [
+    { img: 'assets/maillots/france-domicile-cut.webp',     label: 'Avant' },
+    { img: 'assets/maillots/france-domicile-dos-cut.webp', label: 'Dos' },
+    { img: 'assets/maillots/france-domicile-detail.webp',  label: 'Détail', frame: true },
+  ];
+  el.innerHTML = frames.map((f, i) =>
+    `<img class="hero-shot${i === 0 ? ' active' : ''}${f.frame ? ' hero-shot--framed' : ''}" src="${f.img}" alt="Maillot France ${f.label}" data-label="${f.label}" onerror="this.dataset.failed='1';this.remove()">`
+  ).join('');
+
+  const dotsEl = document.getElementById('heroDots');
+  const labelEl = document.getElementById('heroLabel');
+  const shots = [...el.querySelectorAll('.hero-shot')];
+
+  // Repli : si aucune photo ne charge, on retombe sur le maillot dessiné.
+  setTimeout(() => {
+    if (!el.querySelector('.hero-shot')) {
+      el.innerHTML = buildJerseySVG(1, 'jersey-svg jersey-svg--hero');
+      if (dotsEl) dotsEl.innerHTML = '';
+    }
+  }, 1500);
+
+  if (dotsEl) {
+    dotsEl.innerHTML = shots.map((s, i) =>
+      `<button class="hero-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Vue ${s.dataset.label}"></button>`
+    ).join('');
+  }
+  const dots = dotsEl ? [...dotsEl.querySelectorAll('.hero-dot')] : [];
+
+  let idx = 0, timer = null;
+  function go(n) {
+    idx = (n + shots.length) % shots.length;
+    shots.forEach((s, i) => s.classList.toggle('active', i === idx));
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    if (labelEl) labelEl.textContent = 'France Domicile · ' + shots[idx].dataset.label;
+  }
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function start() { if (!reduce && shots.length > 1) timer = setInterval(() => go(idx + 1), 3200); }
+  function stop() { clearInterval(timer); timer = null; }
+  dots.forEach(d => d.addEventListener('click', () => { go(+d.dataset.i); stop(); start(); }));
+  el.addEventListener('mouseenter', stop);
+  el.addEventListener('mouseleave', start);
+  go(0); start();
 }
 
 /* ── FRANCE SHOWCASE ──────────────────────────────────────── */
