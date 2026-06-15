@@ -221,8 +221,9 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
 .jersey-photo {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover;
-  background: #0e0e0e;
+  object-fit: contain;            /* maillots détourés (fond transparent) */
+  background: transparent;
+  filter: drop-shadow(0 14px 26px rgba(0,0,0,0.55));
 }
 .jersey-photo--contain { object-fit: contain; background: transparent; }
 
@@ -315,7 +316,7 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
   height: 100%;
   object-fit: contain;
   will-change: transform;
-  transform-origin: center center;
+  transform-origin: 50% 16%;       /* ancré près du col -> jamais rogné en haut */
   filter:
     drop-shadow(0 28px 52px rgba(0,0,0,0.70))
     drop-shadow(0 0 60px rgba(63,193,114,0.16));
@@ -326,12 +327,13 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
 }
 
 /* ── MOUVEMENTS DE CAMÉRA ── */
-/* Scène 1 : Reveal — maillot entre en rotation, se stabilise et fait un léger zoom */
+/* Scène 1 : Reveal — maillot entre en rotation puis se stabilise */
 .cine-scene[data-cam="reveal"].active .cine-img {
   animation: camReveal 5.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 /* Scène 2 : Zoom — push-in cinéma sur le détail (écusson, coutures) */
 .cine-scene[data-cam="zoom"].active .cine-img {
+  transform-origin: 60% 40%;       /* zoom vers l'écusson */
   animation: camZoom 4.5s cubic-bezier(0.2, 0, 0.1, 1) forwards;
 }
 /* Scène 3 : Pan — glisse depuis la droite, légère contre-rotation */
@@ -339,19 +341,20 @@ h3 { font-size: 1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
   animation: camPan 5.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Zooms ancrés en haut : on rogne le bas (ourlet), jamais le col */
 @keyframes camReveal {
-  0%   { transform: scale(0.84) rotate(5deg) translateY(4%); }
-  18%  { transform: scale(1.01) rotate(-0.5deg) translateY(0); }
-  100% { transform: scale(1.07) rotate(-1deg) translateY(-1%); }
+  0%   { transform: scale(0.88) rotate(4deg); }
+  55%  { transform: scale(1.0) rotate(0deg); }
+  100% { transform: scale(1.035) rotate(-0.6deg); }
 }
 @keyframes camZoom {
-  0%   { transform: scale(1.0) translate(0, 0); }
-  100% { transform: scale(1.52) translate(-5%, 4%); }
+  0%   { transform: scale(1.0); }
+  100% { transform: scale(1.5); }
 }
 @keyframes camPan {
-  0%   { transform: scale(0.88) translateX(7%) rotate(-3deg); }
-  16%  { transform: scale(1.0) translateX(0) rotate(0.3deg); }
-  100% { transform: scale(1.06) translateX(-3%) rotate(-0.6deg); }
+  0%   { transform: scale(0.9) translateX(6%) rotate(-2.5deg); }
+  18%  { transform: scale(1.0) translateX(0) rotate(0.3deg); }
+  100% { transform: scale(1.03) translateX(-2%) rotate(0.5deg); }
 }
 
 /* ── VIDÉO HERO (Google Flow) ── */

@@ -248,9 +248,9 @@ document.getElementById('pdpDesc').textContent =
 document.title = product.name + ' – Onze2Légende';
 
 const IMG = {
-  front:  `assets/maillots/${product.slug}.webp`,
-  back:   `assets/maillots/${product.slug}-dos.webp`,
-  detail: `assets/maillots/${product.slug}-detail.webp`,
+  front:  `assets/maillots/${product.slug}-cut.webp`,      // détouré, fond transparent
+  back:   `assets/maillots/${product.slug}-dos-cut.webp`,  // détouré, fond transparent
+  detail: `assets/maillots/${product.slug}-detail.webp`,   // gros plan (déjà fond sombre)
 };
 const SIDE_SVG = { front: 'front', back: 'back', detail: 'front' };
 const SIDE_LABEL = { front: 'Avant', back: 'Arrière', detail: 'Détail' };

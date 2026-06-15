@@ -26,6 +26,19 @@ La carte de la boutique montre l'AVANT ; la fiche produit montre
 AVANT + ARRIÈRE (clic sur les vignettes). Si une photo de dos manque,
 le maillot dessiné (dos) s'affiche à la place.
 
+------------------------------------------------------------
+IMPORTANT — FOND TRANSPARENT (détourage) :
+------------------------------------------------------------
+Le site affiche les maillots sur fond SOMBRE. Il utilise donc des
+versions DÉTOURÉES (fond transparent), nommées avec le suffixe "-cut" :
+  france-domicile-cut.webp,  france-domicile-dos-cut.webp
+  argentine-cut.webp,        argentine-dos-cut.webp,  etc.
+
+Tu déposes ta photo normale (ex. bresil.webp, fond blanc) ET moi je
+génère le "-cut" détouré. Si tu déposes une photo sur fond blanc uni,
+demande-moi de la détourer : je produis le -cut automatiquement.
+Sans -cut, le site affiche le maillot DESSINÉ (repli, jamais de fond blanc).
+
 Et pour la grande image d'accueil (hero), à placer dans le dossier PARENT
 onze2legende/assets/ (pas ici) :
   hero-france.webp         -> Maillot France stylé du haut de page

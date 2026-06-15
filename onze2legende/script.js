@@ -150,9 +150,11 @@ function buildJerseySVG(id, cssClass) {
    le SVG reste affiché (repli automatique). */
 function imgPathFor(card) {
   const id = card.dataset.id;
-  if (id === '1') return 'assets/maillots/france-domicile.webp';
-  if (id === '2') return 'assets/maillots/france-exterieur.webp';
-  return 'assets/maillots/' + card.dataset.nation + '.webp';
+  // Versions détourées (fond transparent) -> rendu propre sur fond sombre.
+  // Si le fichier -cut n'existe pas, onerror retire la photo => repli SVG.
+  if (id === '1') return 'assets/maillots/france-domicile-cut.webp';
+  if (id === '2') return 'assets/maillots/france-exterieur-cut.webp';
+  return 'assets/maillots/' + card.dataset.nation + '-cut.webp';
 }
 
 /* Construit le visuel : SVG dessiné + (si dispo) photo réelle par-dessus.
@@ -170,7 +172,7 @@ function renderCardJerseys() {
     const id = card.dataset.id;
     const imgDiv = card.querySelector('.product-card__img');
     if (!imgDiv || imgDiv.querySelector('svg')) return;
-    imgDiv.innerHTML = jerseyVisual(id, imgPathFor(card), 'jersey-svg jersey-svg--card', card.dataset.name, 'cover');
+    imgDiv.innerHTML = jerseyVisual(id, imgPathFor(card), 'jersey-svg jersey-svg--card', card.dataset.name, 'contain');
     if (card.dataset.badge) {
       const b = document.createElement('span');
       b.className = 'product-card__badge';
