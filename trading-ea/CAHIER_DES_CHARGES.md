@@ -110,6 +110,23 @@ VENTE autorisée ⇔  palier ≤ PlusBasVente − s
 - **Tout** trade enregistre son extrême (gagnant OU perdant).
 - Conséquence : les achats montent toujours, les ventes descendent toujours, dans la journée.
 
+### 5.8.1 Conséquence majeure : la « zone morte » (lecture breakout)
+- `PlusHautAchat` **ne fait que monter**, `PlusBasVente` **ne fait que descendre**.
+- **Entre les deux = ZONE MORTE : aucun trade possible** (ni achat, ni vente), même par retournement.
+- Achats **uniquement au-dessus** du plus haut achat du jour ; ventes **uniquement en-dessous** du plus bas vente du jour.
+- La zone morte **s'élargit** au fil de la journée.
+
+```
+      ↑ achats seulement ici (chaque nouveau plus-haut)
+ ═════════════ PlusHautAchat ═════════════
+            🚫 ZONE MORTE 🚫
+       le prix oscille → aucun trade
+ ═════════════ PlusBasVente ══════════════
+      ↓ ventes seulement ici (chaque nouveau plus-bas)
+```
+
+> Résumé en une phrase : **acheter chaque nouveau plus-haut du jour, vendre chaque nouveau plus-bas du jour, ne rien faire au milieu.**
+
 ### 5.9 Reset journalier
 - À chaque **nouveau jour** :
   - `PlusHautAchat = −∞`, `PlusBasVente = +∞`
